@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Audience Research — Early-Career DC Lawyers &amp; AI · BADC YLS</title>
+<title>The Resource Library — BADC YLS AI &amp; Law Series</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
@@ -14,6 +14,7 @@
   --ivory:#F0E5CC; --cream:#F1EBDF; --paper:#FAF3E0;
   --ink:#1C2A39; --muted:#586675; --line:rgba(92,66,28,.18); --line-dk:rgba(255,255,255,.13);
   --brick:#9A4E1E; --brick-soft:#F6EEE9;
+  --teal:#1B6B6D; --teal-soft:#E8F4F4;
   --radius:14px; --maxw:1160px;
   --serif:"Playfair Display",Georgia,"Times New Roman",serif;
   --sans:"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -24,731 +25,458 @@ body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--ivory);l
 h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.16;margin:0;color:var(--ink);}
 a{color:inherit;}
 p{margin:0 0 .9em;}
-[id]{scroll-margin-top:118px;}
+[id]{scroll-margin-top:90px;}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px;}
 .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-strong);margin:0 0 12px;}
+:focus-visible{outline:2px solid var(--gold-strong);outline-offset:3px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:0.001ms!important;transition-duration:0.001ms!important;scroll-behavior:auto!important;}}
 
-/* progress */
-#progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold-strong),var(--gold-soft));z-index:200;transition:width .1s linear;}
+/* ============ GATE ============ */
+#gate{
+  position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(120% 120% at 50% 0%,rgba(194,161,78,.10),transparent 55%),
+    linear-gradient(180deg,var(--ink-bg-2),var(--ink-bg));
+  color:#fff;padding:26px;transition:opacity .5s ease, visibility .5s ease;
+}
+#gate.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.gate-card{
+  width:100%;max-width:420px;text-align:center;
+  border:1px solid rgba(214,188,121,.28);border-radius:16px;
+  background:rgba(255,255,255,.03);
+  padding:44px 36px 36px;
+  box-shadow:0 30px 70px rgba(0,0,0,.45);
+}
+.gate-seal{
+  width:56px;height:56px;margin:0 auto 20px;border-radius:50%;
+  border:1.5px solid var(--gold-soft);display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:20px;color:var(--gold-soft);letter-spacing:.02em;
+}
+.gate-card .eyebrow{color:var(--gold-soft);}
+.gate-card h1{color:#fff;font-size:26px;margin-bottom:10px;}
+.gate-card p.lead{color:#B9C8D6;font-size:14.5px;max-width:32ch;margin:0 auto 26px;}
+.gate-field{text-align:left;margin-bottom:16px;}
+.gate-field label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:8px;}
+.gate-field input{
+  width:100%;padding:12px 14px;border-radius:8px;border:1px solid rgba(214,188,121,.35);
+  background:rgba(255,255,255,.05);color:#fff;font-family:var(--sans);font-size:15px;
+}
+.gate-field input::placeholder{color:#7f92a4;}
+.gate-card button{
+  width:100%;margin-top:6px;font-family:var(--sans);font-size:14.5px;font-weight:700;letter-spacing:.02em;
+  color:var(--ink-bg);background:var(--gold);border:none;border-radius:999px;padding:13px 20px;cursor:pointer;
+  transition:.15s;
+}
+.gate-card button:hover{background:var(--gold-soft);}
+.gate-hint{margin-top:16px;font-size:12px;color:#8FA6BC;font-style:italic;}
+.gate-error{margin-top:14px;padding:10px 14px;border-radius:8px;background:rgba(154,78,30,.18);border:1px solid rgba(154,78,30,.45);color:#F0C9B8;font-size:13px;display:none;text-align:left;}
+.gate-error.show{display:block;}
+.gate-foot{margin-top:22px;padding-top:18px;border-top:1px solid var(--line-dk);font-size:12.5px;color:#8FA6BC;}
+.gate-foot a{color:var(--gold-soft);text-decoration:none;border-bottom:1px dotted rgba(214,188,121,.4);}
 
-/* hero */
-.hero{position:relative;color:#fff;
-  background:linear-gradient(rgba(15,25,34,.72),rgba(15,25,34,.82)),radial-gradient(120% 130% at 50% 30%,rgba(15,25,34,0) 30%,rgba(15,25,34,.9) 100%),var(--ink-bg);
+/* ============ SITE ============ */
+.site{opacity:0;transition:opacity .6s ease;}
+.site.reveal{opacity:1;}
+.site[hidden]{display:none;}
+
+header.masthead{position:relative;color:#fff;
+  background:linear-gradient(rgba(15,25,34,.74),rgba(15,25,34,.86)),radial-gradient(120% 130% at 50% 20%,rgba(15,25,34,0) 30%,rgba(15,25,34,.92) 100%),var(--ink-bg);
   border-bottom:3px solid var(--gold-strong);}
-.hero .wrap{padding:66px 26px 60px;position:relative;}
-.hero .eyebrow{color:var(--gold-soft);}
-.hero h1{color:#fff;font-size:clamp(30px,5vw,52px);letter-spacing:-.5px;max-width:20ch;}
-.hero .sub{font-size:clamp(16px,2.2vw,20px);color:#CBD9E8;margin:20px 0 0;max-width:60ch;}
-.pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:26px;}
-.pills span{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--gold-soft);border:1px solid rgba(214,188,121,.42);border-radius:999px;padding:6px 15px;}
-.hero-meta{margin-top:26px;font-size:13.5px;color:#8FA6BC;border-top:1px solid var(--line-dk);padding-top:18px;max-width:66ch;}
-.hero-meta strong{color:#cfe;font-weight:600;}
+header.masthead .wrap{padding:52px 26px 46px;}
+header.masthead h1{color:#fff;font-size:clamp(30px,4.6vw,46px);letter-spacing:-.4px;max-width:20ch;}
+header.masthead .sub{font-size:clamp(15px,1.8vw,17px);color:#CBD9E8;margin:16px 0 0;max-width:62ch;}
+.stat-row{display:flex;flex-wrap:wrap;gap:28px;margin-top:30px;padding-top:24px;border-top:1px solid var(--line-dk);}
+.stat{min-width:120px;}
+.stat .n{font-family:var(--serif);font-size:26px;color:var(--gold-soft);font-weight:700;}
+.stat .l{font-size:12px;color:#9db1c6;letter-spacing:.04em;text-transform:uppercase;margin-top:3px;}
 
-/* subnav */
 .subnav{position:sticky;top:0;z-index:150;background:var(--ink-bg-2);border-bottom:1px solid var(--line-dk);}
-.subnav .wrap{display:flex;align-items:center;gap:4px;padding:0 20px;overflow-x:auto;scrollbar-width:thin;}
-.subnav a{white-space:nowrap;font-size:13px;font-weight:600;color:#9db1c6;padding:13px 12px;border-bottom:2px solid transparent;transition:.15s;}
+.subnav .wrap{display:flex;align-items:center;gap:4px;padding:0 20px;overflow-x:auto;}
+.subnav a{white-space:nowrap;font-size:13px;font-weight:600;color:#9db1c6;padding:13px 12px;border-bottom:2px solid transparent;transition:.15s;text-decoration:none;}
 .subnav a:hover{color:#fff;}
-.subnav a.active{color:#fff;border-color:var(--gold);}
-.subnav .tools{margin-left:auto;display:flex;gap:6px;padding-left:10px;}
-.subnav .tools button{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--gold-soft);background:transparent;border:1px solid rgba(214,188,121,.35);border-radius:8px;padding:7px 12px;cursor:pointer;white-space:nowrap;transition:.15s;}
-.subnav .tools button:hover{background:rgba(214,188,121,.14);color:#fff;}
+.subnav .status{margin-left:auto;display:flex;align-items:center;gap:8px;padding:10px 0;font-size:12px;color:var(--gold-soft);}
+.subnav .status i{width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block;}
 
-/* how-to bar */
-.howto{background:var(--ink-bg);color:#dfe8f0;}
-.howto .wrap{padding:30px 26px;display:grid;grid-template-columns:1.3fr 1fr;gap:30px;align-items:start;}
-.howto h2{color:#fff;font-size:22px;margin-bottom:8px;}
-.howto p{color:#b9c8d6;font-size:14.5px;margin:0;}
-.howto .legend{border-left:1px solid var(--line-dk);padding-left:24px;}
-.howto .legend .row{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#c9d6e2;margin-bottom:9px;}
-.howto .legend .chip{flex:none;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:6px;margin-top:1px;}
-.chip.key{background:var(--gold-tint);color:#7a5b1e;}
-.chip.flag{background:#3a2a1c;color:var(--gold-soft);}
-.chip.conf{background:rgba(214,188,121,.16);color:var(--gold-soft);border:1px solid rgba(214,188,121,.3);}
-.chip.quote{background:#243441;color:#cfe;}
+main{padding:30px 0 50px;}
+.section{background:#fff;border:1px solid var(--line);border-radius:var(--radius);margin:0 auto 22px;box-shadow:0 4px 16px rgba(28,42,57,.05);overflow:hidden;}
+.section-inner{padding:38px 40px 42px;}
+.sec-head{display:flex;align-items:baseline;gap:16px;}
+.sec-head .num{font-family:var(--serif);font-size:14px;font-weight:700;color:var(--gold-strong);flex:none;letter-spacing:.02em;padding-top:6px;}
+.sec-head h2{font-size:clamp(22px,3vw,30px);flex:1;}
+.rule{height:2px;width:52px;background:var(--gold-strong);border-radius:2px;margin:16px 0 22px;}
+.section-intro{font-size:15.5px;color:var(--muted);max-width:66ch;margin-bottom:26px;}
 
-/* main */
-main{padding:26px 0 40px;}
-.section{background:#fff;border:1px solid var(--line);border-radius:var(--radius);margin:0 auto 22px;max-width:calc(var(--maxw) - 0px);box-shadow:0 4px 16px rgba(28,42,57,.05);overflow:hidden;}
-.section-inner{padding:36px 40px 40px;}
-.sec-head{display:flex;align-items:baseline;gap:16px;cursor:pointer;user-select:none;}
-.sec-head .num{font-family:var(--serif);font-size:15px;font-weight:700;color:var(--gold-strong);flex:none;letter-spacing:.02em;padding-top:6px;min-width:26px;}
-.sec-head h2{font-size:clamp(23px,3.2vw,32px);flex:1;}
-.sec-head .chev{flex:none;color:var(--gold-strong);transition:transform .25s;font-size:20px;line-height:1;padding-top:8px;}
-.section.collapsed .chev{transform:rotate(-90deg);}
-.rule{height:2px;width:52px;background:var(--gold-strong);border-radius:2px;margin:16px 0 24px;}
-.section.collapsed .section-body{display:none;}
+/* Timeline strip */
+.timeline{display:flex;gap:0;overflow-x:auto;padding:4px 0 18px;margin-bottom:8px;}
+.tl-stop{flex:none;width:150px;text-align:center;position:relative;padding:0 8px;}
+.tl-stop:not(:last-child):after{content:"";position:absolute;top:9px;right:-4px;width:calc(100% - 10px);height:1px;background:var(--line);}
+.tl-dot{width:11px;height:11px;border-radius:50%;background:var(--gold);margin:0 auto 10px;position:relative;z-index:1;}
+.tl-stop.off .tl-dot{background:var(--cream);border:2px solid var(--line);}
+.tl-mon{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);}
+.tl-note{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.4;}
+.tl-stop.off .tl-note{font-style:italic;}
 
-/* opening */
-.opening .section-inner{background:var(--paper);}
-.opening p{font-size:18px;line-height:1.7;max-width:70ch;}
-.opening p strong{color:var(--ink);}
+/* Docket cards */
+.docket-legend{display:flex;flex-wrap:wrap;gap:18px;margin:0 0 24px;padding:14px 18px;background:var(--paper);border-radius:10px;border:1px solid var(--line);}
+.docket-legend .item{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--muted);}
+.docket-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;}
+.docket-card{
+  border:1px solid var(--line);border-radius:12px;padding:22px 22px 20px;background:var(--paper);
+  position:relative;transition:transform .2s ease,box-shadow .2s ease;
+}
+.docket-card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(28,42,57,.10);}
+.docket-num{font-family:var(--serif);font-size:12.5px;color:var(--gold-strong);font-weight:700;letter-spacing:.04em;margin-bottom:10px;}
+.docket-card h3{font-size:18.5px;margin-bottom:8px;}
+.docket-meta{font-size:13px;color:var(--muted);margin-bottom:4px;}
+.docket-meta b{color:var(--ink);}
+.docket-tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px;}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 9px;border-radius:999px;}
+.tag.cle{background:var(--teal-soft);color:var(--teal);}
 
-/* key finding */
-.key{background:var(--gold-tint);border-left:4px solid var(--gold-strong);border-radius:0 10px 10px 0;padding:16px 20px;margin:0 0 22px;}
-.key .lbl{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-strong);display:block;margin-bottom:5px;}
-.key p{margin:0;font-size:17px;font-weight:600;line-height:1.5;color:var(--ink);}
+/* the stamp — signature element */
+.stamp{
+  position:absolute;top:18px;right:16px;
+  font-family:var(--sans);font-size:9.5px;font-weight:800;letter-spacing:.12em;
+  padding:6px 10px;border-radius:3px;border:1.5px solid;
+  transform:rotate(4deg);white-space:nowrap;
+}
+.stamp.pending{color:var(--brick);border-color:var(--brick);background:rgba(154,78,30,.06);}
+.stamp.record{color:var(--teal);border-color:var(--teal);background:rgba(27,107,109,.07);}
+.stamp.off{color:var(--muted);border-color:var(--line);background:transparent;}
 
-h3.sub{font-size:16.5px;font-family:var(--sans);font-weight:700;color:var(--ink);margin:26px 0 12px;letter-spacing:.005em;}
-h3.sub:first-child{margin-top:4px;}
-ul.clean{list-style:none;margin:0 0 8px;padding:0;}
-ul.clean li{position:relative;padding:0 0 12px 22px;font-size:15.5px;line-height:1.6;}
-ul.clean li:before{content:"";position:absolute;left:2px;top:9px;width:8px;height:8px;border-radius:50%;background:var(--gold);}
-ul.clean li b{color:var(--ink);}
-.src{color:var(--muted);font-style:italic;}
-
-/* quote */
-.quote{background:var(--cream);border-left:3px solid var(--gold-soft);border-radius:0 8px 8px 0;padding:14px 20px;margin:0 0 16px;}
-.quote p{font-family:var(--serif);font-style:italic;font-size:17px;line-height:1.5;margin:0;color:var(--ink);}
-.quote .attr{display:block;margin-top:8px;font-family:var(--sans);font-style:normal;font-size:12.5px;color:var(--muted);letter-spacing:.02em;}
-
-/* flag */
-.flag{border-left:3px solid var(--brick);background:var(--brick-soft);border-radius:0 8px 8px 0;padding:14px 20px;margin:20px 0;}
-.flag.warm{border-color:var(--gold-strong);background:var(--gold-tint);}
-.flag .lbl{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--brick);margin-bottom:5px;}
-.flag.warm .lbl{color:var(--gold-strong);}
-.flag p{margin:0;font-size:14.5px;line-height:1.58;}
-
-/* confidence line */
-.conf{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:20px 0 0;padding-top:16px;border-top:1px dashed var(--line);font-size:13px;color:var(--muted);}
-.conf .tag{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
-.conf .lvl{font-weight:700;color:var(--gold-strong);letter-spacing:.02em;}
-.conf .dots{display:inline-flex;gap:3px;}
-.conf .dots i{width:8px;height:8px;border-radius:50%;background:var(--gold-strong);display:inline-block;}
-.conf .dots i.off{background:rgba(176,136,59,.28);}
-.conf .note{font-style:italic;}
-
-/* tables */
-.tablewrap{overflow-x:auto;margin:6px 0 18px;border:1px solid var(--line);border-radius:12px;}
-table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;}
-thead th{background:var(--ink-bg);color:#fff;font-family:var(--sans);font-weight:600;text-align:left;padding:12px 16px;font-size:13px;letter-spacing:.02em;}
-tbody td{padding:12px 16px;border-top:1px solid var(--line);vertical-align:top;line-height:1.5;}
-tbody tr:nth-child(odd) td{background:var(--paper);}
-tbody td b{color:var(--ink);}
-td .say{font-family:var(--serif);font-style:italic;color:var(--gold-strong);}
-
-/* use vs avoid */
-.uatabs{display:flex;gap:8px;margin:4px 0 16px;}
-.uatabs button{font-family:var(--sans);font-size:13px;font-weight:600;padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:.15s;}
-.uatabs button.on{background:var(--ink-bg);color:#fff;border-color:var(--ink-bg);}
-.ua{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-.ua .col h4{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gold-tint);}
-.ua .col.use h4{color:var(--gold-strong);}
-.ua .col.avoid h4{color:var(--brick);}
-.ua .item{padding:9px 0;border-bottom:1px solid var(--line);}
-.ua .item:last-child{border-bottom:0;}
-.ua .item .p{font-weight:600;font-size:14px;color:var(--ink);}
-.ua .item .w{font-size:12.5px;color:var(--muted);margin-top:2px;}
-body.ua-use .ua .avoid,body.ua-avoid .ua .use{display:none;}
-body.ua-use .ua,body.ua-avoid .ua{grid-template-columns:1fr;}
-
-/* insights */
-.insight{display:flex;gap:20px;padding:20px 0;border-top:1px solid var(--line);}
-.insight:first-of-type{border-top:0;padding-top:6px;}
-.insight .n{font-family:var(--serif);font-size:34px;font-weight:700;color:var(--gold);line-height:1;flex:none;width:44px;}
-.insight .body h3{font-size:20px;margin-bottom:6px;}
-.insight .body p{margin:0;font-size:15px;color:#33414f;}
-.insight .mark{margin-top:10px;display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);cursor:pointer;user-select:none;}
-.insight .mark input{width:16px;height:16px;accent-color:var(--gold-strong);cursor:pointer;}
-.insight.done{background:var(--gold-tint);border-radius:10px;padding-left:16px;padding-right:16px;}
-
-/* day in life */
-.dil .section-inner{background:linear-gradient(180deg,#fff, var(--paper));}
-.dil p{font-size:16px;line-height:1.72;max-width:74ch;}
-.dil p:first-of-type{font-size:17px;}
-.dil em{color:var(--gold-strong);font-style:italic;}
-.dil p strong{color:var(--ink);}
-
-/* matrix */
-.matrix td.mono{text-align:center;font-size:16px;}
-.dot{color:var(--gold-strong);font-size:15px;}
-.dash{color:#c2b48f;}
-.matrix td.f{font-weight:700;color:var(--gold-strong);white-space:nowrap;}
-.matrix td.f.warn{color:var(--brick);}
-.matrix tr.contested td{background:var(--brick-soft)!important;}
-.matrix td.tiny{font-size:12px;color:var(--muted);text-align:center;}
-.matrix td.tiny.warn{color:var(--brick);font-weight:700;}
-.mxtools{display:flex;align-items:center;gap:10px;margin:2px 0 14px;font-size:13px;color:var(--muted);}
-.mxtools label{display:inline-flex;align-items:center;gap:8px;cursor:pointer;}
-.mxtools input{width:16px;height:16px;accent-color:var(--brick);}
-
-/* footer */
-footer{background:var(--ink-bg);color:#b9c8d6;border-top:3px solid var(--gold-strong);margin-top:10px;}
-footer .wrap{padding:40px 26px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:flex-start;}
-footer h4{color:#fff;font-size:18px;margin-bottom:10px;}
-footer p{font-size:13px;margin:0 0 4px;color:#9db1c6;}
-footer .foot-cta button{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink-bg);background:var(--gold);border:none;border-radius:999px;padding:11px 22px;cursor:pointer;transition:.15s;}
-footer .foot-cta button:hover{background:var(--gold-soft);}
-
-/* back to top */
-#toTop{position:fixed;right:22px;bottom:24px;z-index:120;width:46px;height:46px;border-radius:50%;background:var(--ink-bg);color:var(--gold-soft);border:1px solid var(--gold-strong);cursor:pointer;font-size:20px;display:none;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.2);}
-#toTop.show{display:flex;}
-
-@media (max-width:820px){
-  .howto .wrap{grid-template-columns:1fr;}
-  .howto .legend{border-left:0;padding-left:0;border-top:1px solid var(--line-dk);padding-top:20px;}
-  .section-inner{padding:28px 22px 30px;}
-  .ua{grid-template-columns:1fr;}
-  .subnav .tools{display:none;}
+.docket-action{margin-top:14px;}
+.btn-ghost{
+  display:inline-block;font-size:12.5px;font-weight:700;color:var(--muted);border:1px solid var(--line);
+  border-radius:8px;padding:8px 14px;background:transparent;cursor:default;
+}
+.btn-gold{
+  display:inline-block;font-size:12.5px;font-weight:700;color:var(--ink-bg);border:none;
+  border-radius:8px;padding:9px 16px;background:var(--gold);cursor:pointer;text-decoration:none;
 }
 
-/* print */
-@media print{
-  #progress,.subnav,#toTop,.howto .legend,.insight .mark,.mxtools,.uatabs,.sec-head .chev,footer .foot-cta{display:none!important;}
-  body{background:#fff;font-size:11.5pt;}
-  .section{box-shadow:none;border:1px solid #ccc;break-inside:avoid;page-break-inside:avoid;margin-bottom:14px;}
-  .section.collapsed .section-body{display:block!important;}
-  body.ua-use .ua .avoid,body.ua-avoid .ua .use{display:block!important;}
-  body.ua-use .ua,body.ua-avoid .ua{grid-template-columns:1fr 1fr!important;}
-  .hero{border-bottom:2px solid var(--gold-strong);}
-  a{text-decoration:none;color:inherit;}
-  .matrix tr.contested td{background:#f4ede4!important;}
+/* Exhibit / library */
+.exhibit-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:start;}
+.exhibit-card{background:var(--ink-bg);color:#dbe4ec;border-radius:12px;padding:28px;}
+.exhibit-card h3{color:#fff;font-size:19px;margin-bottom:12px;}
+.exhibit-card p{color:#b9c8d6;font-size:14px;}
+.exhibit-steps{list-style:none;margin:18px 0 6px;padding:0;counter-reset:step;}
+.exhibit-steps li{counter-increment:step;position:relative;padding:0 0 14px 34px;font-size:13.5px;color:#c9d6e2;}
+.exhibit-steps li:before{content:counter(step);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;
+  border:1px solid var(--gold-soft);color:var(--gold-soft);font-family:var(--serif);font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;}
+.exhibit-steps li b{color:#fff;}
+.exhibit-cta{margin-top:6px;}
+.exhibit-side{border:1px dashed var(--line);border-radius:12px;padding:22px 24px;background:var(--paper);}
+.exhibit-side h4{font-size:14px;margin-bottom:10px;}
+.exhibit-side .field{margin-bottom:12px;}
+.exhibit-side .field .k{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-strong);}
+.exhibit-side .field .v{font-size:13.5px;color:var(--ink);margin-top:2px;}
+.pending-note{margin-top:18px;padding:14px 16px;background:var(--gold-tint);border-left:3px solid var(--gold-strong);border-radius:0 8px 8px 0;font-size:13px;color:var(--ink);}
+
+/* Governance */
+.gov-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.gov-card{border:1px solid var(--line);border-radius:12px;padding:24px;background:var(--paper);}
+.gov-card .kicker{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-strong);margin-bottom:8px;}
+.gov-card h3{font-size:18px;margin-bottom:8px;}
+.gov-card p{font-size:14px;color:var(--muted);}
+.gov-meta{font-size:12.5px;color:var(--muted);margin-top:10px;}
+.gov-card-link{display:block;text-decoration:none;color:inherit;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;}
+.gov-card-link:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(28,42,57,.10);border-color:var(--gold-strong);}
+.gov-cta{
+  display:inline-flex;align-items:center;gap:9px;margin-top:18px;
+  padding:12px 20px;border-radius:8px;
+  background:var(--ink-bg);color:var(--gold-soft);
+  font-size:13px;font-weight:700;letter-spacing:.02em;
+  box-shadow:0 4px 14px rgba(22,34,46,.18);
+  transition:background .2s ease,color .2s ease,box-shadow .2s ease;
+}
+.gov-cta i{font-style:normal;transition:transform .15s ease;}
+.gov-card-link:hover .gov-cta{background:var(--ink-bg-2);color:var(--gold);box-shadow:0 8px 20px rgba(22,34,46,.28);}
+.gov-card-link:hover .gov-cta i{transform:translateX(4px);}
+
+/* About */
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:30px;}
+.about-wrap ul.clean{list-style:none;margin:0;padding:0;}
+.about-wrap ul.clean li{position:relative;padding:0 0 12px 22px;font-size:14.5px;line-height:1.6;}
+.about-wrap ul.clean li:before{content:"";position:absolute;left:2px;top:9px;width:8px;height:8px;border-radius:50%;background:var(--gold);}
+
+footer{background:var(--ink-bg);color:#b9c8d6;border-top:3px solid var(--gold-strong);margin-top:10px;}
+footer .wrap{padding:38px 26px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;}
+footer h4{color:#fff;font-size:17px;margin-bottom:8px;}
+footer p{font-size:13px;color:#9db1c6;max-width:44ch;}
+.footer-brand{display:flex;align-items:center;gap:16px;}
+.footer-logo{width:52px;height:52px;border-radius:50%;flex:none;box-shadow:0 0 0 2px rgba(214,188,121,.35);}
+.footer-contact{display:flex;flex-direction:column;gap:9px;margin-top:8px;}
+.footer-contact a{display:inline-flex;align-items:center;gap:9px;color:#cfdbe6;text-decoration:none;font-size:13px;transition:color .15s;}
+.footer-contact a:hover{color:var(--gold-soft);}
+.footer-contact .icon{display:inline-flex;width:17px;height:17px;color:var(--gold-soft);flex:none;}
+.footer-contact .icon svg{width:100%;height:100%;}
+
+@media (max-width:820px){
+  .exhibit-wrap,.about-wrap,.gov-grid{grid-template-columns:1fr;}
+  .section-inner{padding:28px 22px 30px;}
+  .subnav .status{display:none;}
 }
 </style>
 </head>
 <body>
-<div id="progress"></div>
 
-<header class="hero">
-  <div class="wrap">
-    <p class="eyebrow">Consolidated Audience Research · Discussion Brief</p>
-    <h1>Early-Career DC Lawyers &amp; Law Students — AI and the Legal Profession</h1>
-    <p class="sub">The single source of truth for our brand positioning and content strategy, built to guide our YLS membership outreach.</p>
-    <div class="pills">
-      <span>Synthesised from 5 AI research reports</span>
-      <span>10 sections + confidence map</span>
-      <span>~20-minute read</span>
-    </div>
-    <p class="hero-meta">Cross-referenced across <strong>ChatGPT, Claude, Gemini, Grok, and Perplexity</strong>. Where the reports agreed, the finding is marked high-confidence; where they diverged, the divergence is flagged rather than smoothed over. Prepared for the Young Lawyers Section, Bar Association of the District of Columbia.</p>
+<!-- ============ MEMBER ACCESS GATE ============ -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-seal">YLS</div>
+    <p class="eyebrow">BADC &middot; Young Lawyers Section</p>
+    <h1>Member Access</h1>
+    <p class="lead">The AI &amp; Law resource library is reserved for current YLS members.</p>
+    <form id="gate-form">
+      <div class="gate-field">
+        <label for="code">Member access code</label>
+        <input type="text" id="code" name="code" placeholder="Enter your member code" autocomplete="off" />
+      </div>
+      <button type="submit">Enter the Library</button>
+      <p class="gate-error" id="gate-error">That code isn't valid. Check the code shared with current YLS members and try again.</p>
+    </form>
+    <p class="gate-hint">Access is limited to current YLS members.</p>
+    <div class="gate-foot">Not a member yet? <a href="#">Learn about YLS membership</a></div>
   </div>
-</header>
+</div>
 
-<nav class="subnav" aria-label="Section navigation">
-  <div class="wrap">
-    <a href="#opening">Overview</a>
-    <a href="#s1">1 · Market</a>
-    <a href="#s2">2 · Who</a>
-    <a href="#s3">3 · Want</a>
-    <a href="#s4">4 · Reject</a>
-    <a href="#s5">5 · Pain</a>
-    <a href="#s6">6 · Language</a>
-    <a href="#s7">7 · Spend</a>
-    <a href="#s8">8 · Competitors</a>
-    <a href="#s9">9 · Day</a>
-    <a href="#s10">10 · Insights</a>
-    <a href="#appendix">Confidence map</a>
-    <div class="tools">
-      <button id="toggleAll">Collapse all</button>
-      <button onclick="window.print()">Print / PDF</button>
+<!-- ============ SITE ============ -->
+<div class="site" id="site" hidden>
+
+  <header class="masthead">
+    <div class="wrap">
+      <p class="eyebrow">BADC &middot; Young Lawyers Section &middot; Members Only</p>
+      <h1>The AI &amp; Law Resource Library</h1>
+      <p class="sub">Recordings, working materials, and governance references from the YLS AI &amp; Law series, for members to use and apply as they see fit.</p>
     </div>
-  </div>
-</nav>
+  </header>
 
-<section class="howto">
-  <div class="wrap">
-    <div>
-      <p class="eyebrow" style="color:var(--gold-soft)">How to use this in our discussion</p>
-      <h2>Skim, then decide</h2>
-      <p>Start with the five strategic insights (Section 10) — that's the spine. Every section opens with a bold <b style="color:#fff">key finding</b>; the body is the evidence. The <b style="color:#fff">flags</b> mark the three things the reports fought about and that we need to actually resolve as a section. The confidence map at the end shows how hard to lean on each claim. Each section header collapses if you want to walk through them one at a time.</p>
+  <nav class="subnav">
+    <div class="wrap">
+      <a href="#recordings">Session Recordings</a>
+      <a href="#governance">Governance Reference</a>
+      <a href="#library">Workflow Library</a>
+      <span class="status"><i></i>Member session active</span>
     </div>
-    <div class="legend">
-      <div class="row"><span class="chip key">Key finding</span><span>The one-line takeaway that leads each section.</span></div>
-      <div class="row"><span class="chip quote">Quote</span><span>Verbatim audience language. Spot-check before it goes into published copy.</span></div>
-      <div class="row"><span class="chip flag">Flag</span><span>A surprise or an unresolved contradiction for us to decide on.</span></div>
-      <div class="row"><span class="chip conf">Confidence</span><span>How many reports agree, and how strong their sources are.</span></div>
-    </div>
-  </div>
-</section>
+  </nav>
 
-<main>
-  <div class="wrap" style="max-width:var(--maxw);padding:0;">
+  <main>
+    <div class="wrap">
 
-  <!-- OPENING -->
-  <article class="section opening" id="opening">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">◆</span><h2>The audience, in one paragraph</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <p>Early-career DC legal talent — law students (1L–3L, heavily <strong>evening/part-time and first-generation</strong>), first-through-third-year associates, new solos, and <strong>public interest / legal aid / public defender</strong> attorneys — is one audience only in the institutional sense. They do not call themselves "young lawyers." They say "1L," "baby lawyer," "first-year," "just-barred," "first-gen," "evening student." What unites them is a single unresolved anxiety: they are entering a profession being rewired beneath their feet, and no one has told them the new rules. They are <strong>already using AI heavily — but almost none have been trained on it</strong>, and they are caught between professors who forbid it, firms that implicitly expect it, and courts that sanction it. Their surface ask is "teach me the tools." Their real ask is <strong>"tell me I'm going to be okay, then give me the tools to prove it."</strong> What sets them apart from the broader legal market is that they carry the most AI exposure and the least AI support — and the traditional "learn by doing the scut work" apprenticeship that was supposed to build their judgment is visibly collapsing. They want to be <strong>good lawyers who are fluent in AI</strong>, not "AI people," and they will invest in whoever can make them feel ahead of the curve without selling them slop.</p>
-      </div>
-    </div>
-  </article>
+      <!-- SESSION RECORDINGS -->
+      <section class="section" id="recordings">
+        <div class="section-inner">
+          <div class="sec-head"><span class="num">01</span><h2>Session Recordings</h2></div>
+          <div class="rule"></div>
+          <p class="section-intro">Every AI &amp; Law panel this series will be hosted at a DC-area law school. Recordings will post here after each session, usually within one to two weeks.</p>
 
-  <!-- 1 MARKET -->
-  <article class="section" id="s1">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">1</span><h2>Market size &amp; validation</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <div class="key"><span class="lbl">Key finding</span><p>The market is validated by a single structural gap: near-universal AI use, near-zero AI training. That gap is the entire value proposition.</p></div>
-
-        <h3 class="sub">The gap that defines the opportunity</h3>
-        <ul class="clean">
-          <li><b>Use is near-universal, training is almost absent.</b> 69% of legal professionals now use general-purpose GenAI for work (up from 31% the prior year); firms sit at ~41% adoption, solos/small firms at 71–75% <span class="src">(8am 2026; Thomson Reuters 2026; Clio 2026)</span>. Yet only 8–9% of law students have taken any AI practical-skills or literacy course — despite ~80% of lawyers saying they should be trained <span class="src">(Bloomberg Law / ABA Task Force)</span>.</li>
-          <li><b>Schools are not closing it — and it's getting worse.</b> In 2024–25 only 51% of faculty said their school offered any AI-implications course; practical AI coursework fell to 42%; student enrolment was 8–9% <span class="src">(Bloomberg Law)</span>. 43% of firms have no AI policy and 54% provide no responsible-AI training <span class="src">(2026 governance reports, via Grok)</span>.</li>
-          <li><b>Training demonstrably works — which makes trainable skill sellable.</b> A 2026 randomised study of 164 law students found training raised LLM adoption on an issue-spotting exam from 26% to 41% and improved performance by 0.27 grade points, while untrained access alone produced no gain <span class="src">(arXiv, via ChatGPT)</span>.</li>
-        </ul>
-        <div class="conf"><span class="tag">Confidence</span><span class="dots"><i></i><i></i><i></i></span><span class="lvl">High</span><span class="note">— all five reports converge; each cites named industry data.</span></div>
-
-        <h3 class="sub">Segment size, income, and purchasing power</h3>
-        <ul class="clean">
-          <li><b>DC has six ABA-accredited law schools</b> — Georgetown (T14), GW (#27), American (#81), Howard (#91), Catholic (#102), UDC (#147) — a continuous local feeder.</li>
-          <li><b>Income is sharply bifurcated.</b> BigLaw first-years in DC reach a ~$225K median (one of only six US cities at that figure); the 2026 Cravath scale moved the floor toward $235K with $250K+ total comp. Public-interest / legal-aid / government attorneys start far lower — DC Legal Aid $72,830–$77,646; Virginia public defenders $63,260–$83,276; legal-aid national average ~$103,761 <span class="src">(NALP 2025; Legal Aid DC; Indeed)</span>. <b>The split is the single most important structural fact about this audience.</b></li>
-          <li><b>Debt shapes every purchase.</b> Average grad debt ~$137,500 (85% borrow; median JD borrowing ~$112,500 — ABA YLD 2024). 52% of young lawyers with &gt;$200K debt report feeling depressed or hopeless; 76% report financial stress. 39% report postponing marriage or children because of debt <span class="src">(via Claude)</span>.</li>
-          <li><b>There is real job scarcity.</b> Only 82.2% of 2024 grads seeking bar-required jobs found one — nearly 1 in 5 did not <span class="src">(via Claude)</span>.</li>
-          <li><b>Membership pricing is already set low:</b> BADC student $15, young-lawyer $65 (through 6 years post-bar). Nominal cost is not the barrier — perceived value is.</li>
-        </ul>
-        <div class="conf"><span class="tag">Confidence</span><span class="dots"><i></i><i></i><i></i></span><span class="lvl">High</span><span class="note">— salary, debt, and enrolment figures are named-source; the composite thesis is unanimous.</span></div>
-
-        <div class="flag warm"><span class="lbl">⚑ Surprise</span><p>The binding constraint on this segment is not affordability — most can find $15–$65. It is time (for the BigLaw cohort) and demonstrated relevance (for everyone). Price is not the lever; proof-of-value is.</p></div>
-      </div>
-    </div>
-  </article>
-
-  <!-- 2 WHO -->
-  <article class="section" id="s2">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">2</span><h2>Who they are</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <div class="key"><span class="lbl">Key finding</span><p>Segment by resource access, not age. A 28-year-old with Harvey, CoCounsel and firm training is a different buyer from a 28-year-old legal-aid lawyer on a personal ChatGPT account worrying about confidentiality.</p></div>
-        <p>Every report rejects a single persona. The strongest organising axis — argued explicitly by ChatGPT and Claude — is <b>institutional resource access</b>, not age or generation. Perplexity's four "identity clusters" are the most useful overlay on top of that axis:</p>
-        <div class="tablewrap">
-          <table>
-            <thead><tr><th>Cluster</th><th>Segment</th><th>Core drive</th><th>Says</th></tr></thead>
-            <tbody>
-              <tr><td><b>The Hungry Differentiator</b></td><td>BigLaw / large firm</td><td>Privileged but trapped; wants to be the associate who "gets AI" before peers. Time-poor, money-rich.</td><td><span class="say">"I want to be indispensable."</span></td></tr>
-              <tr><td><b>The Mission-Aligned Grinder</b></td><td>Legal aid / public defense / public interest</td><td>Uses AI as a force-multiplier for crushing caseloads, not career capital. Low pay, high loyalty.</td><td><span class="say">"AI can extend justice, not just firm profits."</span></td></tr>
-              <tr><td><b>The Anxious Pragmatist</b></td><td>Small firm / new solo</td><td>No AI budget, no IT, no training. Figuring it out alone; often bought a tool they don't use.</td><td><span class="say">"Just tell me what to actually do."</span></td></tr>
-              <tr><td><b>The Uncertain Craftsperson</b></td><td>1L–3L law students</td><td>Identity still forming; told simultaneously that AI will take their job and that it's essential.</td><td><span class="say">"I need to be ahead before I graduate."</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 class="sub">Identity labels they actually use</h3>
-        <p>"1L / 2L / 3L," "baby lawyer," "first-year," "junior associate," "newly barred," "just-barred," "new solo," "public defender," "legal aid attorney," "first-gen," "evening student," "repeat taker," "doc-review drone," "summer." <b>They do NOT self-identify as "young lawyers"</b> — that label is institutional and reads as bureaucratic. Use it for the org, never as the hook.</p>
-
-        <h3 class="sub">Demographics</h3>
-        <ul class="clean">
-          <li>Mostly 22–32; full-time students 24–27, evening/part-time 28–35+ (relevant to GW's 4LE pipeline).</li>
-          <li>Majority women (~56%), rising BIPOC enrolment (~36%); Georgetown 2024–25 JD population 56% female, 32% minority.</li>
-          <li>Rising first-generation share, often paired with faith language and family-narrative framing around bar passage (#LawTok).</li>
-        </ul>
-        <div class="conf"><span class="tag">Confidence</span><span class="dots"><i></i><i></i><i></i></span><span class="lvl">High</span><span class="note">on demographics; Medium-High on psychographic framing (partly inferred from forum tone).</span></div>
-
-        <div class="flag"><span class="lbl">⚑ Contradiction to resolve</span><p>Are they AI-eager or AI-resistant? Gemini frames them as "incredibly resistant," grieving lost craftsmanship ("AI is killing all the passion I had for this field"). Grok says the "lawyers are anti-AI" assumption is flatly FALSE — individual adoption has exploded. Both are true at once: they use AI daily AND resent what it is doing to the profession and to their own development. Positioning must hold both — pragmatic help without cheerleading.</p></div>
-      </div>
-    </div>
-  </article>
-
-  <!-- 3 WANT -->
-  <article class="section" id="s3">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">3</span><h2>What they want</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <div class="key"><span class="lbl">Key finding</span><p>Not "become an AI expert." They want practice confidence: "I know what I can safely use AI for, I know what not to use it for, and I can produce better work faster without getting embarrassed, sanctioned, or replaced."</p></div>
-        <p>The desired transformation is emotional first, technical second. Every report lands the same distinction: they want to be <b>good lawyers who are fluent in AI, not "AI people."</b> Competence is the goal; AI is the vehicle.</p>
-
-        <h3 class="sub">Practical outcomes (6–12 months)</h3>
-        <ul class="clean">
-          <li><b>Students:</b> pass the bar; land any bar-required job in a tightening market; use AI for outlines, issue-spotting, clinic work and job materials without tripping school policy or character-and-fitness; say something intelligent about AI in an interview without sounding like a hype person.</li>
-          <li><b>1st–3rd-year associates:</b> cut first-draft time; verify output and catch hallucinations before a partner sees them; understand the firm's tool stack; not be the associate cut when junior classes shrink. AI competence is now screened in hiring (Freshfields, A&amp;O Shearman have tested applicants on prompt refinement and hallucination awareness).</li>
-          <li><b>Public interest / legal aid / defense:</b> triage intake faster, summarise records, organise discovery, draft client-facing explanations — with free/low-cost tools, under confidentiality constraints, without losing human judgment or relational lawyering.</li>
-        </ul>
-
-        <h3 class="sub">Emotional outcomes</h3>
-        <p>The headline that synthesises all five: <b>"Tell me I'm going to be okay, then give me the tools to prove it."</b> The dream state is not a title or a credential — it is <b>earned confidence in a high-stakes moment</b>: walking into a panel, a client meeting, a deposition, or a job interview and not feeling like a junior who's faking it. Claude's framing: "belonging without performing" — a community where admitting "I don't know how to use this yet" doesn't cost status.</p>
-        <div class="quote"><p>This is the fundamental question: How are you going to do higher quality legal work with AI than you're going to do by yourself?<span class="attr">— practitioner discussion (via Gemini)</span></p></div>
-        <div class="conf"><span class="tag">Confidence</span><span class="dots"><i></i><i></i><i></i></span><span class="lvl">High</span><span class="note">— professional goals are strongly, unanimously supported; the emotional framing is a consistent synthesis.</span></div>
-      </div>
-    </div>
-  </article>
-
-  <!-- 4 REJECT -->
-  <article class="section" id="s4">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">4</span><h2>What they reject</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <div class="key"><span class="lbl">Key finding</span><p>They have a finely tuned radar for "AI slop" and vendor theatre. The fastest way to lose them is abstraction, hype, or anything that looks AI-generated without acknowledgment.</p></div>
-
-        <h3 class="sub">Trust-breakers and the "guru alarm"</h3>
-        <ul class="clean">
-          <li><b>"AI slop."</b> Their reflexive, pejorative term for low-quality, unreviewed AI output. It appears in every report and in our own notes. Being the organisation that visibly refuses to be sloppy is itself a positioning statement.</li>
-          <li><b>Panels where nobody opens a tool.</b> A row of senior partners saying "AI is here" for an hour with no screen, no workflow, no takeaway. Repeatedly named the #1 waste.</li>
-          <li><b>Vendor demos and vendor evangelism.</b> Product-centred content dressed as education. They want vendor-neutral workflows, not "how to use our tool."</li>
-          <li><b>Non-lawyer AI influencers and "thought leaders."</b> "Thought leader" is openly mocked in r/biglaw and r/Lawyertalk. Credibility requires being a lawyer showing real work.</li>
-          <li><b>Futurism without a caveat.</b> "AI is the future of law," "disrupt," "revolutionise," "transformative," "cutting-edge" — heard a thousand times; reads as tech-bro energy and, worse, can trigger job-loss anxiety.</li>
-          <li><b>Anyone who makes it sound easy.</b> Content that skips confidentiality, hallucination, and supervision reads as naive or dishonest. They trust people who say "do NOT use AI for this" as clearly as "use AI for this."</li>
-          <li><b>Job-loss fear as a hook.</b> They are already saturated with "AI will take your job." Leading with it — even to debunk it — reads as condescending. Claude and Grok both flag this explicitly.</li>
-        </ul>
-        <div class="flag"><span class="lbl">⚑ Cultural nuance</span><p>The reports draw from a US legal-community register — the source pools were US Reddit/LinkedIn/industry). The salient split here is register, not nationality: polished and aspirational in public (LinkedIn, #LawTok graduation posts, faith language), dark and gallows-humoured in venting spaces (Reddit, Fishbowl, Glassdoor). Miss the private register and copy reads as institutional.</p></div>
-        <div class="conf"><span class="tag">Confidence</span><span class="dots"><i></i><i></i><i></i></span><span class="lvl">High</span><span class="note">— anti-patterns are the single most consistent finding across all five reports.</span></div>
-      </div>
-    </div>
-  </article>
-
-  <!-- 5 PAIN -->
-  <article class="section" id="s5">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">5</span><h2>Pain points</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <div class="key"><span class="lbl">Key finding</span><p>The deepest fear is not "AI will replace me." It is "the work that used to prove I was worth training is disappearing, and no one has told me what replaces it." The apprenticeship pipeline is collapsing.</p></div>
-
-        <h3 class="sub">What "stuck" and "overwhelmed" actually look like</h3>
-        <ul class="clean">
-          <li><b>The scut-work / pipeline crisis (the real one).</b> Juniors are handed AI drafts and told to "review and edit" — but without having done the foundational work, they lack the experience to catch nuanced errors or hallucinations. Harvard economists studying 66M workers call this "seniority-biased technological change": entry-level demand falls while senior employment grows, and firms are not backfilling with more complex work. The fear is arriving at year 5 without the judgment years 1–3 were supposed to build.</li>
-        </ul>
-        <div class="quote"><p>We are training our replacements at the expense of our development, and anyone who thinks that isn't so is in for a rude awakening.<span class="attr">— r/biglaw (via Gemini)</span></p></div>
-        <div class="quote"><p>I have no idea wtf I'm doing — you think I'm going to be able to efficiently use ChatGPT for research? I spend twice the amount of time fact checking now.<span class="attr">— r/LawSchool (via Gemini)</span></p></div>
-        <ul class="clean">
-          <li><b>Ethics paralysis.</b> ABA Formal Opinion 512 (July 2024) sets competence, confidentiality, supervision, and candour duties; 300+ federal judges now have AI-disclosure orders; sanctions from $5,000 to $109,700 have been imposed for hallucinated citations; 729+ hallucination incidents are documented. Even paid, cite-aware tools are not safe — Stanford RegLab found Lexis+ AI and Westlaw AI-Assisted Research hallucinate on 17–33% of queries. New attorneys are terrified of being the cautionary tale (Mata v. Avianca is burned into memory).</li>
-          <li><b>Policy incoherence.</b> Professors forbid it, firms implicitly expect it, courts sanction it — with no reconciliation. "My torts professor extolls AI; my Legal Writing professor sternly warns against it." The result is risk without a rulebook.</li>
-          <li><b>No trusted translator.</b> No DC-specific, bar-sanctioned place to ask "am I using this right / am I about to break a rule" without looking stupid in front of a partner, professor, or judge.</li>
-          <li><b>Private resentment (rarely posted).</b> Partners get to be "AI-curious" and experimental; juniors get blamed if the output is wrong — while being the ones actually running the tool without training or standing to push back.</li>
-        </ul>
-        <div class="quote"><p>Am I going to be held responsible if it misses something? Then f*** off.<span class="attr">— r/biglaw associate refusing firm AI tools (via Perplexity)</span></p></div>
-
-        <h3 class="sub">What they've already tried and been disappointed by</h3>
-        <ul class="clean">
-          <li>Generic "AI 101" and legal-tech webinars where no one opens a tool on screen.</li>
-          <li>Vague or inconsistent school guidance; firm trainings that are too tool-specific.</li>
-          <li>Ethics-heavy CLEs that are workflow-light; bar events with vague "networking" value.</li>
-          <li>Generic AI courses that teach generalist LLM writing, not legal-specific tasks; tools that summarise well but can't be trusted on citations.</li>
-        </ul>
-        <div class="flag"><span class="lbl">⚑ Handle with care — do not use as a hook</span><p>Mental-health load is real market context: 77% of law students report anxiety, 71% disrupted sleep, 51% depression; suicidal ideation rose from 6% to 11% (2014–2021); ~70% of lawyers report imposter syndrome, worse at entry level. This is context only. Never use financial stress, burnout, or wellbeing as a marketing lever — acknowledge it carefully, occasionally, and never as bait.</p></div>
-        <div class="conf"><span class="tag">Confidence</span><span class="dots"><i></i><i></i><i></i></span><span class="lvl">High</span><span class="note">on labour-market and hallucination data; Medium on the "private resentment" framing (inferred where live Reddit access was thin).</span></div>
-      </div>
-    </div>
-  </article>
-
-  <!-- 6 LANGUAGE -->
-  <article class="section" id="s6">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">6</span><h2>How they talk</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <div class="key"><span class="lbl">Key finding</span><p>Their native register is precise, skeptical, tool-oriented, self-deprecating, and darkly funny. They respect intelligence and specificity; they punish abstraction and corporate cheer. Use their words or lose them.</p></div>
-
-        <h3 class="sub">Native vocabulary (use it to signal you're one of them)</h3>
-        <p>"AI slop" · "hallucinating cases" / "making up citations" · "garbage in, garbage out" · "malpractice time bomb" · "scut work" · "doc-review drone" · "audit / verify / context window" · "prompt engineering" (what they feel reduced to) · "outsourcing critical thinking" · "cite check / bluebooking / billables" · "getting cooked" · "delegation remorse" (U-Michigan) · "symphony conductor" (the lawyer who orchestrates AI) · "get in, get your money, get out" (BigLaw fatalism) · "bar slop."</p>
-        <div class="flag warm"><span class="lbl">⚑ Emerging shift worth adopting</span><p>"Workflow" beats "prompt engineering" as a headline — the latter sounds techy and abstract, the former sounds usable Monday morning. Industry vocabulary is already moving from "prompt engineering" to "context engineering." Practitioner-credible frameworks (e.g. Helen Fan's "Legal AI Value Stack") land far better than generic "AI is scary/exciting."</p></div>
-
-        <h3 class="sub">The register split (verbatim)</h3>
-        <div class="quote"><p>I PASSED THE OHIO BAR EXAM AND I AM AN ATTORNEY!!! … God is better than good to me!<span class="attr">— public / celebratory register, #LawTok (via Claude)</span></p></div>
-        <div class="quote"><p>I lost my spark. I feel physically sick. How do I get past this — I want to love being a lawyer again.<span class="attr">— private / venting register, professional forums (via Claude)</span></p></div>
-        <div class="quote"><p>I just nod when they mention Harvey.<span class="attr">— self-effacing, common (via Perplexity)</span></p></div>
-        <div class="quote"><p>AI is a fantastic teacher if you know how to use it — but using it to give you the answers to everything, without doing the analysis yourself, is going to make you dumb.<span class="attr">— r/LawSchool (via Grok)</span></p></div>
-
-        <h3 class="sub">Language to use vs. avoid</h3>
-        <div class="uatabs">
-          <button data-ua="both" class="on">Both</button>
-          <button data-ua="use">Use only</button>
-          <button data-ua="avoid">Avoid only</button>
-        </div>
-        <div class="ua">
-          <div class="col use">
-            <h4>Use — and why it works</h4>
-            <div class="item"><div class="p">"Practical AI for real legal work"</div><div class="w">signals no theory, just application</div></div>
-            <div class="item"><div class="p">"What you can safely use tonight or tomorrow"</div><div class="w">concrete, differentiating promise</div></div>
-            <div class="item"><div class="p">"AI-fluent lawyer" (not "AI lawyer")</div><div class="w">they want to be lawyers who know AI</div></div>
-            <div class="item"><div class="p">"Access to the bench" / "ask a judge"</div><div class="w">uniquely BADC — lead with it</div></div>
-            <div class="item"><div class="p">"Verify everything — here's exactly how"</div><div class="w">speaks to hallucination + ethics fear</div></div>
-            <div class="item"><div class="p">"Not a vendor pitch" / "Bring your laptop, leave with a workflow"</div><div class="w">they trust peers, not platforms</div></div>
-            <div class="item"><div class="p">"first-gen," "evening student," specific tool + task names</div><div class="w">names, not "AI" as a monolith</div></div>
+          <div class="timeline">
+            <div class="tl-stop"><div class="tl-dot"></div><div class="tl-mon">Oct 2026</div><div class="tl-note">Kickoff &middot; GW Law</div></div>
+            <div class="tl-stop"><div class="tl-dot"></div><div class="tl-mon">Nov 2026</div><div class="tl-note">Georgetown Law</div></div>
+            <div class="tl-stop off"><div class="tl-dot"></div><div class="tl-mon">Dec 2026</div><div class="tl-note">Gala &middot; no panel</div></div>
+            <div class="tl-stop"><div class="tl-dot"></div><div class="tl-mon">Jan 2027</div><div class="tl-note">AU Wash. College of Law</div></div>
+            <div class="tl-stop"><div class="tl-dot"></div><div class="tl-mon">Feb 2027</div><div class="tl-note">Howard Law</div></div>
+            <div class="tl-stop"><div class="tl-dot"></div><div class="tl-mon">Mar 2027</div><div class="tl-note">Catholic University Law</div></div>
+            <div class="tl-stop off"><div class="tl-dot"></div><div class="tl-mon">Apr 2027</div><div class="tl-note">No session &middot; board travel</div></div>
+            <div class="tl-stop"><div class="tl-dot"></div><div class="tl-mon">May 2027</div><div class="tl-note">UDC David A. Clarke Law</div></div>
           </div>
-          <div class="col avoid">
-            <h4>Avoid — and why it fails</h4>
-            <div class="item"><div class="p">"AI is the future of law"</div><div class="w">abstract, heard 1,000×</div></div>
-            <div class="item"><div class="p">"AI won't replace lawyers who use AI"</div><div class="w">overused cliché, reads as deflection</div></div>
-            <div class="item"><div class="p">"disrupt / revolutionise / transformative / cutting-edge"</div><div class="w">tech-bro; triggers job anxiety</div></div>
-            <div class="item"><div class="p">"thought leader" / "leverage synergies"</div><div class="w">openly mocked by the audience</div></div>
-            <div class="item"><div class="p">"young lawyers" as the hook</div><div class="w">institutional; not self-identity</div></div>
-            <div class="item"><div class="p">"Master AI in one hour" / "prompt-engineering bootcamp"</div><div class="w">sounds like a get-rich webinar</div></div>
-            <div class="item"><div class="p">burnout / debt / "don't miss out!" FOMO</div><div class="w">distress-as-bait; reads as desperation</div></div>
+
+          <div class="docket-legend">
+            <div class="item"><span class="stamp pending" style="position:static;transform:none;">Session Pending</span> not yet held; check back after the date above</div>
+            <div class="item"><span class="stamp record" style="position:static;transform:none;">On the Record</span> recording posted and linked below</div>
+          </div>
+
+          <div class="docket-grid">
+
+            <div class="docket-card">
+              <span class="stamp pending">Session Pending</span>
+              <div class="docket-num">No. I</div>
+              <h3>AI &amp; Law Series Kickoff</h3>
+              <div class="docket-meta"><b>GW Law</b> &middot; October 2026</div>
+              <div class="docket-meta">Leads: Philippe Lin &amp; Reni</div>
+              <div class="docket-action"><span class="btn-ghost">Recording available after the session</span></div>
+            </div>
+
+            <div class="docket-card">
+              <span class="stamp pending">Session Pending</span>
+              <div class="docket-num">No. II</div>
+              <h3>The AI Debate</h3>
+              <div class="docket-meta"><b>Georgetown Law</b> &middot; November 2026</div>
+              <div class="docket-meta">Leads: Reni + board member TBD</div>
+              <div class="docket-action"><span class="btn-ghost">Recording available after the session</span></div>
+            </div>
+
+            <div class="docket-card">
+              <span class="stamp pending">Session Pending</span>
+              <div class="docket-num">No. III</div>
+              <h3>AI &amp; Intellectual Property</h3>
+              <div class="docket-meta"><b>AU Washington College of Law</b> &middot; January 2027</div>
+              <div class="docket-meta">Cosponsored with the BADC IP Section</div>
+              <div class="docket-action"><span class="btn-ghost">Recording available after the session</span></div>
+            </div>
+
+            <div class="docket-card">
+              <span class="stamp pending">Session Pending</span>
+              <div class="docket-num">No. IV</div>
+              <h3>AI, Pro Bono &amp; Access to Justice</h3>
+              <div class="docket-meta"><b>Howard Law</b> &middot; February 2027</div>
+              <div class="docket-meta">Leads: Atticus DeProspo &amp; Reni</div>
+              <div class="docket-action"><span class="btn-ghost">Recording available after the session</span></div>
+            </div>
+
+            <div class="docket-card">
+              <span class="stamp pending">Session Pending</span>
+              <div class="docket-num">No. V</div>
+              <h3>AI in Government &amp; Federal Practice</h3>
+              <div class="docket-meta"><b>Catholic University Law</b> &middot; March 2027</div>
+              <div class="docket-meta">Leads: Reni &amp; Sneha Suresh</div>
+              <div class="docket-action"><span class="btn-ghost">Recording available after the session</span></div>
+            </div>
+
+            <div class="docket-card">
+              <span class="stamp pending">Session Pending</span>
+              <div class="docket-num">No. VI</div>
+              <h3>Year-One Build Report</h3>
+              <div class="docket-meta"><b>UDC David A. Clarke Law</b> &middot; May 2027</div>
+              <div class="docket-meta">Full committee &amp; full YLS board</div>
+              <div class="docket-action"><span class="btn-ghost">Recording available after the session</span></div>
+            </div>
+
           </div>
         </div>
-        <div class="conf"><span class="tag">Confidence</span><span class="dots"><i></i><i></i><i></i></span><span class="lvl">High</span><span class="note">— sourced phrases and industry vocabulary are well-documented. Spot-check verbatim Reddit lines before publishing.</span></div>
-      </div>
-    </div>
-  </article>
+      </section>
 
-  <!-- 7 SPEND -->
-  <article class="section" id="s7">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">7</span><h2>Spending &amp; investment behaviour</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <div class="key"><span class="lbl">Key finding</span><p>High tolerance for spending on professional protection; low tolerance for institutional overhead. The free-to-paid ceiling in this niche is low — so the paid tier must sell access and community, not information.</p></div>
+      <!-- GOVERNANCE REFERENCE -->
+      <section class="section" id="governance">
+        <div class="section-inner">
+          <div class="sec-head"><span class="num">02</span><h2>Governance Reference</h2></div>
+          <div class="rule"></div>
+          <p class="section-intro">A practical starting point for members thinking about their own firm's approach to AI, separate from the session recordings above.</p>
 
-        <h3 class="sub">What they already pay for</h3>
-        <ul class="clean">
-          <li><b>Bar prep: $1,500–$4,000</b> (Barbri, Themis, UWorld) — their first major discretionary professional purchase, and increasingly questioned on Reddit.</li>
-          <li><b>Personal AI: $0–$30/mo baseline</b> (ChatGPT Plus $20, Claude Pro, Perplexity). Consensus: "buy general AI first, specialised legal AI second." One widely-shared Reddit user passed the bar first-time on AI alone at ~$325/mo (ChatGPT Pro $200 + Gemini Ultra $125). Solos are told to budget $25–$150/mo.</li>
-          <li><b>CLE credit</b> — required, so a captive spend and a genuine purchase driver. Bundling real CLE hours into a paid tier materially raises willingness to pay (two-birds value).</li>
-          <li><b>Free but valued:</b> U-Michigan's "AI for Lawyers" (Coursera, free) and Clio's Legal AI Fundamentals certification are the reference points — and set the expectation that baseline AI education is free.</li>
-        </ul>
-
-        <h3 class="sub">Price bands</h3>
-        <div class="tablewrap">
-          <table>
-            <thead><tr><th>Segment</th><th>Membership sensitivity</th><th>Paid digital tier sweet spot</th></tr></thead>
-            <tbody>
-              <tr><td><b>Law students</b></td><td>$15–$25/yr fine if there's something to show for it</td><td>$10–$25 / month</td></tr>
-              <tr><td><b>BigLaw associate</b></td><td>$65/yr is nothing — barrier is time, not money</td><td>$20–$50 / month</td></tr>
-              <tr><td><b>Public-interest / legal aid</b></td><td>$65/yr is a real cost — value case must be explicit</td><td>$20–$50 / month, ROI-gated</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p>National comparables (via Claude): Miami-Dade young-lawyer section $35–$70/yr; Dallas $20–$90. <b>BADC's $15 / $65 sits at the low-to-mid end — correct for a dormant section rebuilding trust. Do not raise prices in year one.</b></p>
-
-        <h3 class="sub">Buy triggers vs. non-purchase triggers</h3>
-        <ul class="clean">
-          <li><b>Buys:</b> CLE credit attached · a judge or known practitioner in the room · a specific tool walkthrough promised ("you'll leave knowing how to use X for Y") · a peer cohort / private community · a tangible asset (vetted prompt repo, verification checklist) not available on a free YouTube video.</li>
-          <li><b>Abandons:</b> panels of seniors talking at them · generic happy hours · the "standard bar-association playbook" · vendor pitches · anything that looks AI-generated.</li>
-        </ul>
-        <div class="conf"><span class="tag">Confidence</span><span class="dots"><i></i><i></i><i class="off"></i></span><span class="lvl">Medium-High</span><span class="note">— pricing comparables and buy/abandon triggers well supported; exact per-person spend is inferred.</span></div>
-      </div>
-    </div>
-  </article>
-
-  <!-- 8 COMPETITORS -->
-  <article class="section" id="s8">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">8</span><h2>Competitive landscape</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <div class="key"><span class="lbl">Key finding</span><p>There is abundant AI-law content — and almost none of it owns this exact lane: DC-based, bar-affiliated, practical/workflow, ethical, judge-adjacent, run as a sustained flagship identity. That lane is the moat.</p></div>
-        <div class="tablewrap">
-          <table>
-            <thead><tr><th>Who serves this audience now</th><th>What they do well</th><th>What they miss</th></tr></thead>
-            <tbody>
-              <tr><td><b>Legal-AI newsletters / podcasts</b> <span class="src">(Goutos, Legaltech Week, LawNext, AI &amp; the Future of Law)</span></td><td>Substantive, consistent, often excellent — and free.</td><td>Built for mid-career / legal-ops, not students or 1st–3rd years; not live, not DC, not cohort.</td></tr>
-              <tr><td><b>Large-firm AI academies</b> <span class="src">(Latham's 2-day program for 400+ first-years)</span></td><td>Structured, grounded, well-resourced.</td><td>Closed to the public; only their own associates; deepens the two-tier divide.</td></tr>
-              <tr><td><b>Lexis / Westlaw AI training</b></td><td>Platform-integrated tutorials.</td><td>Vendor-interest skewed; platform-locked; not ethics/workflow-first.</td></tr>
-              <tr><td><b>Other bars' YLDs</b> <span class="src">(Illinois, Florida, ABA)</span></td><td>Running some AI programming.</td><td>All one-off sessions; none pair AI with judicial access; none run it as a flagship identity.</td></tr>
-              <tr><td><b>DC Bar / affinity bars</b></td><td>Mandatory membership / strong community.</td><td>Broad mission or identity-based; not competing for the practical-AI niche.</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 class="sub">The white space nobody owns</h3>
-        <ul class="clean">
-          <li><b>The judge–practitioner bridge.</b> No DC bar org is systematically bringing sitting judges into candid conversations on AI disclosure orders, sanctions, and expectations of counsel. Uniquely available to BADC (the "bench bar" since 1871). This is the unfakeable, zero-cost differentiator — no Reddit thread, newsletter, or vendor can replicate it.</li>
-          <li><b>AI-for-young-lawyers.</b> There is no dominant online space or newsletter built for students / junior associates specifically (Claude's sharpest insight) — the whole ecosystem skews mid-career. This white space is arguably bigger than judge access alone.</li>
-          <li><b>The public-interest / access-to-justice track.</b> Nobody teaches a legal-aid attorney how to use AI for client intake under confidentiality constraints. Highest-loyalty, most underserved segment.</li>
-          <li><b>The student→young-attorney pipeline.</b> Everyone runs isolated events; nobody builds a multi-year feeder from law-school chapters (GW first) into an engaged section.</li>
-          <li><b>Ethics + AI for new practitioners specifically.</b> Most content covers what tools can do; almost none covers Opinion 512 + court orders + an undefined firm policy for a first-year.</li>
-        </ul>
-        <div class="conf"><span class="tag">Confidence</span><span class="dots"><i></i><i></i><i></i></span><span class="lvl">High</span><span class="note">— gap directly observed across ABA, Illinois, Florida, and the DC landscape.</span></div>
-        <div class="flag"><span class="lbl">⚑ Strategic caveat</span><p>The free content from legal-tech media is genuinely excellent. That means the paid tier cannot compete on information — it must compete on access density and community. Anything BADC-branded that shares AI outputs also needs visible, staffed quality control, or it becomes a liability the moment a hallucination ships under the section's name.</p></div>
-      </div>
-    </div>
-  </article>
-
-  <!-- 9 DAY -->
-  <article class="section dil" id="s9">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">9</span><h2>A day in the life</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <p class="src" style="margin-bottom:16px;">Composite synthesised from all five reports (their names for her: Jordan, Maya, Alex).</p>
-        <p>Maya is 27, a 2L in GW Law's evening program, working full-time as a paralegal at a small immigration firm in DC. She commutes 45 minutes each way and studies on the Metro. She's ~$140K in debt and hasn't told her parents the real number. She's first-gen; passing the bar would be a family event.</p>
-        <p>6:55 a.m., on the train, she's on LinkedIn. A lawyer at a bigger firm posted about using Harvey to prep a deposition. She reads it twice — <em>Harvey, that's the one the big firms use</em> — and screenshots it. By noon she's drafted a client-intake summary with ChatGPT, then spent twenty minutes fact-checking every citation, because she read about the <em>Mata v. Avianca</em> sanctions in Legal Writing and does not want to be the next cautionary tale. There's no guidance from the firm and she's not sure her professor's AI policy even covers this.</p>
-        <p>7:00 p.m., Con Law. The professor says, in passing, "ChatGPT can summarise a case but it can't understand it." Eye-roll in the section group chat; three memes. One person asks, seriously, whether lawyers are actually using this in court right now. Nobody knows for sure. After class she spends 40 minutes on r/LawSchool and r/Lawyertalk — the thread is "Harvey AI and the death of junior associates" — reads every comment, drafts a reply, deletes it, posts it, and goes to bed at 12:30 slightly more anxious and slightly more motivated than when she woke up.</p>
-        <p>She follows two or three LinkedIn creators, saves the posts with concrete before/after workflows, and scrolls past anything that reads like a vendor pitch. She has $15 for a student membership and would spend it in a second — <strong>if someone she trusted told her there'd be a judge talking about AI court orders, a practitioner showing a real tool workflow, and a place to ask the questions she can't ask at work.</strong></p>
-      </div>
-    </div>
-  </article>
-
-  <!-- 10 INSIGHTS -->
-  <article class="section" id="s10">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">10</span><h2>Five strategic insights</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <p>The five things that must drive the brand and the paid offer, distilled from where all five reports converge.</p>
-
-        <div class="insight">
-          <div class="n">1</div>
-          <div class="body">
-            <h3>Judge access is the moat — lead with it in every piece of outreach.</h3>
-            <p>Sitting judges speaking candidly about AI in court is something no Reddit thread, newsletter, vendor, or competing bar can offer. It costs nothing to provide and cannot be bought elsewhere. Generic AI tips are commodity content; <b>"ask a judge" is the recruiting lever.</b></p>
-            <label class="mark"><input type="checkbox"> Discussed</label>
+          <div class="gov-grid">
+            <a class="gov-card gov-card-link" href="how-to-start-building-your-firms-ai-policy.html">
+              <div class="kicker">Written Guide</div>
+              <h3>How to Start Building Your Firm's AI Policy</h3>
+              <p>A plain-language walkthrough for solo and small-firm attorneys: what a first policy needs to cover, and what can wait.</p>
+              <div class="gov-meta">Grounded in DC Bar Opinion 388 &amp; ABA Formal Opinion 512 &middot; no separate login required</div>
+              <span class="gov-cta">Read the Guide <i>&rarr;</i></span>
+            </a>
+            <div class="gov-card">
+              <div class="kicker">Recorded Session</div>
+              <h3>Expert Zoom Q&amp;A</h3>
+              <p>A recorded conversation with an AI governance practitioner, covering the same ground as the guide in discussion form.</p>
+              <div class="gov-meta">Recording posts after the session is held</div>
+              <div class="gov-meta" style="margin-top:6px;font-style:italic;">Possibly co-hosted by Philippe Lin and Vernon Wharf of SIGIL Governance &middot; to be confirmed</div>
+            </div>
           </div>
         </div>
-        <div class="insight">
-          <div class="n">2</div>
-          <div class="body">
-            <h3>Sell safe, verifiable workflows — not AI enthusiasm.</h3>
-            <p>The promise is "you'll leave with something you can use tonight," delivered by someone opening a real tool on screen — mistakes included — and saying as clearly what <i>not</i> to use AI for as what to. The core line: "learn to use AI on real legal tasks without compromising ethics, confidentiality, or quality." Anti-slop quality control is non-negotiable and must be visibly staffed.</p>
-            <label class="mark"><input type="checkbox"> Discussed</label>
+      </section>
+
+      <!-- WORKFLOW LIBRARY -->
+      <section class="section" id="library">
+        <div class="section-inner">
+          <div class="sec-head"><span class="num">03</span><h2>Workflow &amp; Prompt Library</h2></div>
+          <div class="rule"></div>
+          <p class="section-intro">After each session, practical takeaways get written up and added to a members-only repository, maintained by the YLS AI Committee, so the group's working knowledge compounds instead of evaporating after the panel ends.</p>
+
+          <div class="exhibit-wrap">
+            <div class="exhibit-card">
+              <h3>How an entry gets here</h3>
+              <p>Every workflow that makes it into the library has been named, tried, and checked before it's shared.</p>
+              <ol class="exhibit-steps">
+                <li><b>Learn.</b> A practitioner or session panelist demonstrates a real task and its risks.</li>
+                <li><b>Try it.</b> Members work the same task and note what actually happened, not just the theory.</li>
+                <li><b>Check it.</b> A confidentiality, accuracy, and usability pass before anything gets shared further.</li>
+                <li><b>Add to the library.</b> A short, dated write-up joins this page for other members to reuse.</li>
+              </ol>
+              <div class="exhibit-cta"><a class="btn-gold" href="https://github.com/yls-badc/ai-and-law-series" target="_blank" rel="noopener">View the Workflow Repository</a></div>
+            </div>
+            <div class="exhibit-side">
+              <h4>What you'll find here</h4>
+              <div class="field"><div class="k">Format</div><div class="v">Short, dated write-ups: what the task was, what worked, what to watch for</div></div>
+              <div class="field"><div class="k">Access</div><div class="v">Gated to current dues-paying YLS members</div></div>
+              <div class="field"><div class="k">Maintained by</div><div class="v">YLS AI Committee</div></div>
+              <div class="pending-note">The first entries publish after the October kickoff. This section will fill in as sessions happen, not before.</div>
+            </div>
           </div>
         </div>
-        <div class="insight">
-          <div class="n">3</div>
-          <div class="body">
-            <h3>Segment by resource access, and own the underserved — don't chase BigLaw.</h3>
-            <p>BigLaw juniors have academies; the audience that is starving and loyal is public-interest / legal-aid / defense, small-firm/solo, and evening/first-gen students (the GW 4LE wedge is real and specifically reachable). Say it out loud: "whether your firm has enterprise AI or you're on free tools, here's what's safe, useful, and verifiable." The mission-driven segment refers, returns, and is grateful — because everyone else ignores them.</p>
-            <label class="mark"><input type="checkbox"> Discussed</label>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap" style="flex-direction:column;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;width:100%;">
+        <div class="footer-brand">
+          <img src="badc logo.png" alt="Seal of the Bar Association of the District of Columbia" class="footer-logo" />
+          <div>
+            <h4>BADC Young Lawyers Section</h4>
+            <p>AI &amp; Law resource library. A members-only benefit of the Bar Association of the District of Columbia's Young Lawyers Section.</p>
           </div>
         </div>
-        <div class="insight">
-          <div class="n">4</div>
-          <div class="body">
-            <h3>The paid tier is access and community, not information — price for trust, not revenue.</h3>
-            <p>Baseline AI education is already free, so scarcity can't be the product. The product is ongoing leverage: monthly niche Zoom labs, a members-only vetted prompt/workflow repository, verification checklists, office hours, a private forum where people can say the quiet part out loud ("did I disclose this correctly under Judge X's standing order?"). $15 / $65 is correctly priced for a dormant section rebuilding trust — keep it there in year one.</p>
-            <label class="mark"><input type="checkbox"> Discussed</label>
-          </div>
-        </div>
-        <div class="insight">
-          <div class="n">5</div>
-          <div class="body">
-            <h3>The real product is emotional — "you're not behind, you're not a fraud, you belong." Never lead with job-loss fear.</h3>
-            <p>Underneath the tool talk is imposter syndrome and a collapsing apprenticeship. Address the pipeline / scut-work grief directly by positioning AI as a tutor and senior sounding board that makes them sharper — not a replacement. Debunking "AI will take your job" still centres the fear; earn trust by being useful and specific instead. The transformation we're selling: <b><i>"I am not behind. I'm ahead. And I got there with a community that helped me, not a vendor that sold me something."</i></b></p>
-            <label class="mark"><input type="checkbox"> Discussed</label>
-          </div>
+        <div>
+          <h4>Questions</h4>
+          <p class="footer-contact">
+            <a href="mailto:YLS@badc.org">
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg></span>
+              YLS@badc.org
+            </a>
+            <a href="https://instagram.com/yls.badc" target="_blank" rel="noopener">
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none"/></svg></span>
+              @yls.badc
+            </a>
+          </p>
         </div>
       </div>
     </div>
-  </article>
+  </footer>
 
-  <!-- APPENDIX -->
-  <article class="section" id="appendix">
-    <div class="section-inner">
-      <div class="sec-head"><span class="num">✦</span><h2>Appendix · Cross-report confidence &amp; agreement map</h2><span class="chev">▾</span></div>
-      <div class="rule"></div>
-      <div class="section-body">
-        <p>How the five reports line up on the highest-stakes claims. <span class="dot">●</span> = the finding appears and is endorsed; <span class="dash">—</span> = not addressed.</p>
-        <div class="mxtools"><label><input type="checkbox" id="mxToggle"> Highlight the two contested rows</label></div>
-        <div class="tablewrap">
-          <table class="matrix">
-            <thead><tr><th>Finding</th><th>ChatGPT</th><th>Claude</th><th>Gemini</th><th>Grok</th><th>Perpl.</th><th>Confidence</th></tr></thead>
-            <tbody>
-              <tr><td>Use-vs-training gap is the core opportunity</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="f">High</td></tr>
-              <tr><td>Segment by resource access, not age</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dash">—</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="f">High</td></tr>
-              <tr><td>Judge / bench access is the moat</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="f">High</td></tr>
-              <tr><td>Real fear = collapsing apprenticeship, not job title</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="f">High</td></tr>
-              <tr><td>"AI slop" is the anchor trust-breaker</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="f">High</td></tr>
-              <tr><td>"Workflow" beats "prompt engineering" as framing</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dash">—</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="f">Med-High</td></tr>
-              <tr><td>Paid tier = access/community, not information</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="f">High</td></tr>
-              <tr><td>Public-interest / A2J = untapped loyalty</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="f">Med-High</td></tr>
-              <tr><td>Evening / first-gen / GW wedge</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="f">Med-High</td></tr>
-              <tr><td>Never lead with job-loss fear</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dash">—</span></td><td class="f">Med-High</td></tr>
-              <tr data-contested="1"><td>Audience is AI-eager vs. AI-resistant</td><td class="tiny">eager</td><td class="tiny">eager</td><td class="tiny warn">resistant</td><td class="tiny">eager</td><td class="tiny">mixed</td><td class="f warn">Contested</td></tr>
-              <tr data-contested="1"><td>Verbatim Reddit quotes verified</td><td class="tiny warn">no</td><td class="tiny warn">no</td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="mono"><span class="dot">●</span></td><td class="f warn">Mixed</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="flag"><span class="lbl">⚑ Two rows to watch</span><p><b>(1) Eager vs. resistant</b> — resolve as "both": high private use, high public ambivalence; position pragmatically, never as cheerleading. <b>(2) Quote verification</b> — the confident Reddit quotes come from Perplexity, Grok, and Gemini; ChatGPT and Claude flagged they could not verify live threads. Treat every verbatim quote as directionally real and spot-check the live thread before it appears in published copy.</p></div>
-      </div>
-    </div>
-  </article>
-
-  </div>
-</main>
-
-<footer>
-  <div class="wrap">
-    <div>
-      <h4>Bar Association of the District of Columbia</h4>
-      <p>Young Lawyers Section · Audience research briefing</p>
-      <p>Synthesised from five independent AI research reports on the same audience and source pools.</p>
-      <p>Underlying source citations live in the original reports.</p>
-    </div>
-    <div class="foot-cta">
-      <button onclick="window.print()">Print / save as PDF</button>
-    </div>
-  </div>
-</footer>
-
-<button id="toTop" aria-label="Back to top" title="Back to top">↑</button>
+</div>
 
 <script>
-(function(){
-  "use strict";
+var GATE_CODE = 'BADC2026';
 
-  // progress bar
-  var progress = document.getElementById("progress");
-  var toTop = document.getElementById("toTop");
-  function onScroll(){
-    var st = window.scrollY || document.documentElement.scrollTop;
-    var h = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.width = (h > 0 ? (st / h) * 100 : 0) + "%";
-    if (st > 600) toTop.classList.add("show"); else toTop.classList.remove("show");
+function unlockSite(){
+  var gate = document.getElementById('gate');
+  var site = document.getElementById('site');
+  try{ sessionStorage.setItem('badcYlsGateOK', '1'); }catch(err){}
+  gate.classList.add('hidden');
+  site.hidden = false;
+  requestAnimationFrame(function(){ site.classList.add('reveal'); });
+}
+
+document.getElementById('gate-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var input = document.getElementById('code').value.trim().toUpperCase();
+  var errorEl = document.getElementById('gate-error');
+  if(input !== GATE_CODE){
+    errorEl.classList.add('show');
+    return;
   }
-  window.addEventListener("scroll", onScroll, {passive:true});
-  onScroll();
-  toTop.addEventListener("click", function(){ window.scrollTo({top:0, behavior:"smooth"}); });
+  errorEl.classList.remove('show');
+  unlockSite();
+  setTimeout(function(){ document.querySelector('header.masthead h1').focus(); }, 500);
+});
 
-  // scrollspy
-  var links = Array.prototype.slice.call(document.querySelectorAll('.subnav a'));
-  var map = {};
-  links.forEach(function(a){ var id = a.getAttribute('href').slice(1); map[id] = a; });
-  var sections = Array.prototype.slice.call(document.querySelectorAll('article.section'));
-  if ('IntersectionObserver' in window){
-    var spy = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (e.isIntersecting){
-          links.forEach(function(l){ l.classList.remove('active'); });
-          var id = e.target.id;
-          if (map[id]) {
-            map[id].classList.add('active');
-            map[id].scrollIntoView({block:'nearest', inline:'center'});
-          }
-        }
-      });
-    }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
-    sections.forEach(function(s){ spy.observe(s); });
+try{
+  if(sessionStorage.getItem('badcYlsGateOK') === '1'){
+    unlockSite();
   }
+}catch(err){}
 
-  // collapse sections (click header)
-  document.querySelectorAll('.sec-head').forEach(function(h){
-    h.addEventListener('click', function(){
-      h.closest('.section').classList.toggle('collapsed');
-    });
+document.querySelectorAll('a[href^="#"]').forEach(function(link){
+  link.addEventListener('click', function(e){
+    var id = link.getAttribute('href').slice(1);
+    var target = id && document.getElementById(id);
+    if(!target) return;
+    e.preventDefault();
+    target.scrollIntoView({behavior:'smooth', block:'start'});
+    if(history.pushState){ history.pushState(null, '', '#' + id); }
   });
-
-  // expand / collapse all
-  var toggleAll = document.getElementById('toggleAll');
-  toggleAll.addEventListener('click', function(){
-    var anyOpen = document.querySelector('article.section:not(.collapsed)');
-    sections.forEach(function(s){
-      if (anyOpen) s.classList.add('collapsed'); else s.classList.remove('collapsed');
-    });
-    toggleAll.textContent = anyOpen ? 'Expand all' : 'Collapse all';
-  });
-
-  // language use/avoid tabs
-  var uaBtns = document.querySelectorAll('.uatabs button');
-  uaBtns.forEach(function(b){
-    b.addEventListener('click', function(){
-      uaBtns.forEach(function(x){ x.classList.remove('on'); });
-      b.classList.add('on');
-      document.body.classList.remove('ua-use','ua-avoid');
-      var v = b.getAttribute('data-ua');
-      if (v === 'use') document.body.classList.add('ua-use');
-      else if (v === 'avoid') document.body.classList.add('ua-avoid');
-    });
-  });
-
-  // insight "discussed" state
-  document.querySelectorAll('.insight input[type=checkbox]').forEach(function(cb){
-    cb.addEventListener('change', function(){
-      cb.closest('.insight').classList.toggle('done', cb.checked);
-    });
-  });
-
-  // matrix contested highlight
-  var mx = document.getElementById('mxToggle');
-  mx.addEventListener('change', function(){
-    document.querySelectorAll('.matrix tr[data-contested]').forEach(function(r){
-      r.classList.toggle('contested', mx.checked);
-    });
-  });
-})();
+});
 </script>
+
 </body>
 </html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How to Start Building Your Firm's AI Policy — BADC YLS AI &amp; Law Series</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink-bg:#16222E; --ink-bg-2:#0F1922;
+  --gold:#C2A14E; --gold-strong:#B0883B; --gold-soft:#D6BC79; --gold-tint:#F3E9D4;
+  --ivory:#F0E5CC; --cream:#F1EBDF; --paper:#FAF3E0;
+  --ink:#1C2A39; --muted:#586675; --line:rgba(92,66,28,.18); --line-dk:rgba(255,255,255,.13);
+  --brick:#9A4E1E; --brick-soft:#F6EEE9;
+  --teal:#1B6B6D; --teal-soft:#E8F4F4;
+  --radius:14px; --maxw:1160px;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sans:"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--ivory);line-height:1.62;font-size:16px;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.16;margin:0;color:var(--ink);}
+a{color:inherit;}
+p{margin:0 0 .9em;}
+[id]{scroll-margin-top:96px;}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px;}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-strong);margin:0 0 12px;}
+:focus-visible{outline:2px solid var(--gold-strong);outline-offset:3px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:0.001ms!important;transition-duration:0.001ms!important;scroll-behavior:auto!important;}}
+
+/* ============ GATE ============ */
+#gate{
+  position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(120% 120% at 50% 0%,rgba(194,161,78,.10),transparent 55%),
+    linear-gradient(180deg,var(--ink-bg-2),var(--ink-bg));
+  color:#fff;padding:26px;transition:opacity .5s ease, visibility .5s ease;
+}
+#gate.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.gate-card{
+  width:100%;max-width:420px;text-align:center;
+  border:1px solid rgba(214,188,121,.28);border-radius:16px;
+  background:rgba(255,255,255,.03);
+  padding:44px 36px 36px;
+  box-shadow:0 30px 70px rgba(0,0,0,.45);
+}
+.gate-seal{
+  width:56px;height:56px;margin:0 auto 20px;border-radius:50%;
+  border:1.5px solid var(--gold-soft);display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:20px;color:var(--gold-soft);letter-spacing:.02em;
+}
+.gate-card .eyebrow{color:var(--gold-soft);}
+.gate-card h1{color:#fff;font-size:26px;margin-bottom:10px;}
+.gate-card p.lead{color:#B9C8D6;font-size:14.5px;max-width:32ch;margin:0 auto 26px;}
+.gate-field{text-align:left;margin-bottom:16px;}
+.gate-field label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:8px;}
+.gate-field input{
+  width:100%;padding:12px 14px;border-radius:8px;border:1px solid rgba(214,188,121,.35);
+  background:rgba(255,255,255,.05);color:#fff;font-family:var(--sans);font-size:15px;
+}
+.gate-field input::placeholder{color:#7f92a4;}
+.gate-card button{
+  width:100%;margin-top:6px;font-family:var(--sans);font-size:14.5px;font-weight:700;letter-spacing:.02em;
+  color:var(--ink-bg);background:var(--gold);border:none;border-radius:999px;padding:13px 20px;cursor:pointer;
+  transition:.15s;
+}
+.gate-card button:hover{background:var(--gold-soft);}
+.gate-hint{margin-top:16px;font-size:12px;color:#8FA6BC;font-style:italic;}
+.gate-error{margin-top:14px;padding:10px 14px;border-radius:8px;background:rgba(154,78,30,.18);border:1px solid rgba(154,78,30,.45);color:#F0C9B8;font-size:13px;display:none;text-align:left;}
+.gate-error.show{display:block;}
+.gate-foot{margin-top:22px;padding-top:18px;border-top:1px solid var(--line-dk);font-size:12.5px;color:#8FA6BC;}
+.gate-foot a{color:var(--gold-soft);text-decoration:none;border-bottom:1px dotted rgba(214,188,121,.4);}
+
+/* ============ SITE ============ */
+.site{opacity:0;transition:opacity .6s ease;}
+.site.reveal{opacity:1;}
+.site[hidden]{display:none;}
+
+.crumb-bar{background:var(--ink-bg-2);border-bottom:1px solid var(--line-dk);}
+.crumb-bar .wrap{padding:12px 26px;}
+.crumb-bar a{color:var(--gold-soft);text-decoration:none;font-size:12.5px;font-weight:700;letter-spacing:.03em;display:inline-flex;align-items:center;gap:6px;}
+.crumb-bar a:hover{color:#fff;}
+
+header.masthead{position:relative;color:#fff;
+  background:linear-gradient(rgba(15,25,34,.74),rgba(15,25,34,.86)),radial-gradient(120% 130% at 50% 20%,rgba(15,25,34,0) 30%,rgba(15,25,34,.92) 100%),var(--ink-bg);
+  border-bottom:3px solid var(--gold-strong);}
+header.masthead .wrap{padding:52px 26px 46px;}
+header.masthead h1{color:#fff;font-size:clamp(28px,4.2vw,44px);letter-spacing:-.4px;max-width:24ch;}
+header.masthead .sub{font-size:clamp(15px,1.8vw,17px);color:#CBD9E8;margin:16px 0 0;max-width:62ch;}
+header.masthead .byline{font-family:var(--serif);font-style:italic;font-size:13.5px;color:var(--gold-soft);margin:10px 0 0;max-width:62ch;}
+.stat-row{display:flex;flex-wrap:wrap;gap:28px;margin-top:30px;padding-top:24px;border-top:1px solid var(--line-dk);}
+.stat{min-width:140px;}
+.stat .n{font-family:var(--serif);font-size:26px;color:var(--gold-soft);font-weight:700;}
+.stat .l{font-size:12px;color:#9db1c6;letter-spacing:.02em;margin-top:3px;max-width:24ch;}
+
+.subnav{position:sticky;top:0;z-index:150;background:var(--ink-bg-2);border-bottom:1px solid var(--line-dk);}
+.subnav .wrap{display:flex;align-items:center;gap:4px;padding:0 20px;overflow-x:auto;}
+.subnav a{white-space:nowrap;font-size:13px;font-weight:600;color:#9db1c6;padding:13px 12px;border-bottom:2px solid transparent;transition:.15s;text-decoration:none;}
+.subnav a:hover{color:#fff;}
+.subnav .status{margin-left:auto;display:flex;align-items:center;gap:8px;padding:10px 0;font-size:12px;color:var(--gold-soft);white-space:nowrap;}
+.subnav .status i{width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block;}
+
+main{padding:30px 0 50px;}
+.section{background:#fff;border:1px solid var(--line);border-radius:var(--radius);margin:0 auto 22px;box-shadow:0 4px 16px rgba(28,42,57,.05);overflow:hidden;}
+.section-inner{padding:38px 40px 42px;}
+.sec-head{display:flex;align-items:baseline;gap:16px;}
+.sec-head .num{font-family:var(--serif);font-size:14px;font-weight:700;color:var(--gold-strong);flex:none;letter-spacing:.02em;padding-top:6px;}
+.sec-head h2{font-size:clamp(22px,3vw,30px);flex:1;}
+.rule{height:2px;width:52px;background:var(--gold-strong);border-radius:2px;margin:16px 0 22px;}
+.section-intro{font-size:15.5px;color:var(--muted);max-width:70ch;margin-bottom:22px;}
+
+/* Not-included grid */
+.not-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--brick);margin:22px 0 10px;}
+.not-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-bottom:22px;}
+.not-item{display:flex;align-items:flex-start;gap:10px;padding:13px 15px;background:var(--brick-soft);border:1px solid rgba(154,78,30,.18);border-radius:10px;font-size:13.5px;color:var(--ink);}
+.not-item .x{flex:none;color:var(--brick);font-weight:800;font-family:var(--serif);line-height:1.4;}
+
+/* Fact / stat cards */
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin:24px 0 26px;}
+.fact-card{background:var(--ink-bg);color:#fff;border-radius:12px;padding:20px 20px 18px;}
+.fact-n{font-family:var(--serif);font-size:23px;font-weight:700;color:var(--gold-soft);line-height:1.2;}
+.fact-l{font-size:12.5px;color:#b9c8d6;margin-top:8px;line-height:1.5;}
+
+/* Pull quote */
+.pull-quote{margin:24px 0;padding:22px 28px;border-left:3px solid var(--gold-strong);background:var(--paper);border-radius:0 10px 10px 0;font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink);line-height:1.5;}
+.pull-quote cite{display:block;margin-top:12px;font-family:var(--sans);font-style:normal;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--gold-strong);}
+
+.big-statement{text-align:center;font-family:var(--serif);font-style:italic;font-size:clamp(19px,2.4vw,25px);color:var(--ink);max-width:28ch;margin:26px auto 4px;line-height:1.4;}
+
+/* Risk continuum */
+.risk-continuum{margin:26px 0 8px;}
+.risk-scale-label{display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.risk-track{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--teal) 0%,var(--line) 30%,var(--gold) 65%,var(--brick) 100%);margin-bottom:22px;opacity:.6;}
+.risk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.risk-box{border-radius:12px;padding:18px 16px;border:1px solid;}
+.risk-box h4{font-size:15px;margin-bottom:10px;line-height:1.25;}
+.risk-controls{font-size:12px;font-weight:700;margin:0 0 10px;}
+.risk-examples{font-size:12px;color:var(--muted);line-height:1.5;margin:0;}
+.risk-1{background:var(--teal-soft);border-color:rgba(27,107,109,.25);}
+.risk-1 h4,.risk-1 .risk-controls{color:var(--teal);}
+.risk-2{background:var(--paper);border-color:var(--line);}
+.risk-2 h4{color:var(--ink);}
+.risk-2 .risk-controls{color:var(--muted);}
+.risk-3{background:var(--gold-tint);border-color:rgba(176,136,59,.32);}
+.risk-3 h4,.risk-3 .risk-controls{color:var(--gold-strong);}
+.risk-4{background:var(--brick-soft);border-color:rgba(154,78,30,.25);}
+.risk-4 h4,.risk-4 .risk-controls{color:var(--brick);}
+.risk-footer{margin-top:18px;padding:13px 16px;background:var(--ink-bg);color:#fff;border-radius:10px;text-align:center;font-size:13px;font-weight:600;}
+.risk-caption{font-size:12.5px;color:var(--muted);font-style:italic;max-width:74ch;margin-top:16px;}
+@media (max-width:820px){.risk-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:520px){.risk-grid{grid-template-columns:1fr;}}
+
+/* Decision cards */
+.decision-nav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px;}
+.decision-nav a{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;font-size:13px;color:var(--gold-strong);text-decoration:none;transition:.15s;flex:none;}
+.decision-nav a:hover{background:var(--gold);color:#fff;border-color:var(--gold);}
+.decision-card{border:1px solid var(--line);border-radius:12px;padding:26px 26px 24px;background:var(--paper);margin-bottom:18px;}
+.decision-card:last-child{margin-bottom:0;}
+.decision-head{margin-bottom:12px;}
+.decision-num{display:inline-block;font-family:var(--serif);font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--gold-strong);margin-bottom:6px;}
+.decision-head h3{font-size:clamp(18px,2.4vw,22px);}
+.decision-card p{font-size:14.5px;color:var(--ink);}
+.decide-box{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+.decide-box.single{grid-template-columns:1fr;}
+.decide-col{border-radius:10px;padding:16px 18px;border:1px solid;background:#fff;}
+.decide-required{border-color:rgba(27,107,109,.3);}
+.decide-required .decide-label{color:var(--teal);}
+.decide-required{background:var(--teal-soft);}
+.decide-choice{background:var(--gold-tint);border-color:rgba(176,136,59,.32);}
+.decide-choice .decide-label{color:var(--gold-strong);}
+.decide-label{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+.decide-col p{font-size:13.5px;margin:0 0 6px;color:var(--ink);}
+.decide-cite{font-size:11.5px!important;color:var(--muted)!important;font-style:italic;margin-top:2px!important;}
+@media (max-width:700px){.decide-box{grid-template-columns:1fr;}}
+
+/* Sources */
+.source-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;}
+.source-col h4{font-size:14px;margin-bottom:12px;color:var(--ink);}
+.source-col ul{list-style:none;margin:0;padding:0;}
+.source-col li{position:relative;padding:0 0 10px 18px;font-size:12.5px;line-height:1.55;color:var(--muted);}
+.source-col li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--gold);}
+.source-col a{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-color:rgba(176,136,59,.4);text-underline-offset:2px;transition:color .15s,text-decoration-color .15s;}
+.source-col a:hover{color:var(--gold-strong);text-decoration-color:var(--gold-strong);}
+.source-note{margin-top:10px;font-size:11.5px;color:var(--muted);font-style:italic;}
+
+footer{background:var(--ink-bg);color:#b9c8d6;border-top:3px solid var(--gold-strong);margin-top:10px;}
+footer .wrap{padding:38px 26px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;}
+footer h4{color:#fff;font-size:17px;margin-bottom:8px;}
+footer p{font-size:13px;color:#9db1c6;max-width:44ch;}
+.footer-brand{display:flex;align-items:center;gap:16px;}
+.footer-logo{width:52px;height:52px;border-radius:50%;flex:none;box-shadow:0 0 0 2px rgba(214,188,121,.35);}
+.footer-contact{display:flex;flex-direction:column;gap:9px;margin-top:8px;}
+.footer-contact a{display:inline-flex;align-items:center;gap:9px;color:#cfdbe6;text-decoration:none;font-size:13px;transition:color .15s;}
+.footer-contact a:hover{color:var(--gold-soft);}
+.footer-contact .icon{display:inline-flex;width:17px;height:17px;color:var(--gold-soft);flex:none;}
+.footer-contact .icon svg{width:100%;height:100%;}
+.footer-back{font-size:12px;color:#9db1c6;margin-top:4px;}
+.footer-back a{color:var(--gold-soft);text-decoration:none;}
+.footer-back a:hover{color:#fff;}
+
+@media (max-width:820px){
+  .section-inner{padding:28px 22px 30px;}
+  .subnav .status{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ MEMBER ACCESS GATE ============ -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-seal">YLS</div>
+    <p class="eyebrow">BADC &middot; Young Lawyers Section</p>
+    <h1>Member Access</h1>
+    <p class="lead">This guide is part of the AI &amp; Law resource library, reserved for current YLS members.</p>
+    <form id="gate-form">
+      <div class="gate-field">
+        <label for="code">Member access code</label>
+        <input type="text" id="code" name="code" placeholder="Enter your member code" autocomplete="off" />
+      </div>
+      <button type="submit">View the Guide</button>
+      <p class="gate-error" id="gate-error">That code isn't valid. Check the code shared with current YLS members and try again.</p>
+    </form>
+    <p class="gate-hint">Access is limited to current YLS members.</p>
+    <div class="gate-foot"><a href="index.html">&larr; Back to the Resource Library</a></div>
+  </div>
+</div>
+
+<!-- ============ SITE ============ -->
+<div class="site" id="site" hidden>
+
+  <div class="crumb-bar"><div class="wrap"><a href="index.html#governance">&larr; Back to the Resource Library</a></div></div>
+
+  <header class="masthead">
+    <div class="wrap">
+      <p class="eyebrow">BADC &middot; Young Lawyers Section &middot; Governance Reference</p>
+      <h1 tabindex="-1">How to Start Building Your Firm's AI Policy</h1>
+      <p class="sub">A guide for solo and small-firm attorneys, grounded in DC Bar Ethics Opinion 388 and ABA Formal Opinion 512.</p>
+      <p class="byline">Written by Irene Rhodes (Chair, Young Lawyers Section) and Philippe Lin (Secretary, Young Lawyers Section)</p>
+
+      <div class="stat-row">
+        <div class="stat"><div class="n">8</div><div class="l">Decisions a first policy needs to make</div></div>
+        <div class="stat"><div class="n">$5K&ndash;$109K+</div><div class="l">Documented sanctions for fabricated AI citations</div></div>
+        <div class="stat"><div class="n">17&ndash;33%</div><div class="l">Hallucination rate in paid legal research tools</div></div>
+        <div class="stat"><div class="n">May 2025</div><div class="l">DC Rules 1.1 &amp; 1.6 amended (Order M284-24)</div></div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="subnav">
+    <div class="wrap">
+      <a href="#overview">Overview</a>
+      <a href="#why-now">Why It Matters</a>
+      <a href="#risk-model">The Risk Model</a>
+      <a href="#decisions">The 8 Decisions</a>
+      <a href="#sources">Sources</a>
+      <span class="status"><i></i>Governance Reference</span>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+
+      <!-- OVERVIEW -->
+      <section class="section" id="overview">
+        <div class="section-inner">
+          <div class="sec-head"><span class="num">01</span><h2>What This Guide Is &mdash; and Isn't</h2></div>
+          <div class="rule"></div>
+          <p class="section-intro">This resource is not a model AI policy. It explains the decisions a firm AI policy needs to make, and the professional responsibility duties that inform them.</p>
+
+          <div class="not-label">This guide is not</div>
+          <div class="not-grid">
+            <div class="not-item"><span class="x">&times;</span>A model AI policy you can copy and paste</div>
+            <div class="not-item"><span class="x">&times;</span>A clause bank or engagement letter addendum</div>
+            <div class="not-item"><span class="x">&times;</span>A vendor evaluation form</div>
+            <div class="not-item"><span class="x">&times;</span>A jurisdiction-specific determination of what your firm is ethically required to do</div>
+          </div>
+
+          <p>AI did not create new professional duties &mdash; it changed how existing ones apply. Competence, confidentiality, supervision, candor, and reasonable fees are the same obligations they've always been. What's different is what those obligations demand when the tool producing work product is a prediction engine that can fabricate authorities, expose client information, and generate plausible-sounding analysis that is substantively wrong.</p>
+        </div>
+      </section>
+
+      <!-- WHY IT MATTERS -->
+      <section class="section" id="why-now">
+        <div class="section-inner">
+          <div class="sec-head"><span class="num">02</span><h2>Why This Matters Now</h2></div>
+          <div class="rule"></div>
+          <p class="section-intro">The consequences of ignoring this are no longer hypothetical &mdash; and in DC specifically, the stakes changed in 2025.</p>
+
+          <div class="fact-grid">
+            <div class="fact-card">
+              <div class="fact-n">$5K&ndash;$109K+</div>
+              <div class="fact-l">Documented sanctions for AI-generated filings containing fabricated citations</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-n">17&ndash;33%</div>
+              <div class="fact-l">Hallucination rate found by Stanford RegLab, even in paid, citation-aware legal research tools</div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-n">May 6, 2025</div>
+              <div class="fact-l">DC Court of Appeals Order M284-24 added binding technology-competence language to Rule 1.1 and expanded Rule 1.6 to cover unauthorized access to client information, not just disclosure</div>
+            </div>
+          </div>
+
+          <p>Those dimensions are now enforceable rules, not advisory guidance. But a written policy does not, on its own, make a firm compliant.</p>
+
+          <blockquote class="pull-quote">
+            &ldquo;Adopting a policy is not a safe harbor, and a document alone does not mitigate, remove, or prevent mistakes. Only careful implementation, training, supervision, and verification can reduce those risks.&rdquo;
+            <cite>New Jersey Supreme Court, Notice to the Bar (March 2026)</cite>
+          </blockquote>
+
+          <p>What a policy does is give a firm a consistent, defensible, documented way to meet the obligations that already exist. The eight questions that follow are the decisions that policy needs to make.</p>
+        </div>
+      </section>
+
+      <!-- RISK MODEL -->
+      <section class="section" id="risk-model">
+        <div class="section-inner">
+          <div class="sec-head"><span class="num">03</span><h2>The Risk Model</h2></div>
+          <div class="rule"></div>
+          <p class="section-intro">Not every AI use carries the same risk. Before working through the eight questions, it helps to have a mental model for how risk shifts with the use case.</p>
+
+          <p class="big-statement">"Controls should follow the task, not the tool."</p>
+
+          <div class="risk-continuum">
+            <div class="risk-scale-label"><span>Lower exposure</span><span>Higher exposure</span></div>
+            <div class="risk-track"></div>
+            <div class="risk-grid">
+              <div class="risk-box risk-1">
+                <h4>Internal administrative</h4>
+                <p class="risk-controls">No client data &middot; No external output</p>
+                <p class="risk-examples">Brainstorming, scheduling, internal drafts, summaries of public material</p>
+              </div>
+              <div class="risk-box risk-2">
+                <h4>Client data involved</h4>
+                <p class="risk-controls">Confidentiality duties &middot; Vendor vetting required</p>
+                <p class="risk-examples">Reviewing client documents, drafting with case details, research with facts</p>
+              </div>
+              <div class="risk-box risk-3">
+                <h4>Substantive legal analysis</h4>
+                <p class="risk-controls">Verification mandatory &middot; Professional judgment</p>
+                <p class="risk-examples">Legal research, case analysis, strategy memos, contract review</p>
+              </div>
+              <div class="risk-box risk-4">
+                <h4>Client-facing or filed output</h4>
+                <p class="risk-controls">Candor obligations &middot; Court disclosure rules</p>
+                <p class="risk-examples">Court filings, client advice letters, intake chatbots, opposing counsel</p>
+              </div>
+            </div>
+            <div class="risk-footer">Diligence, verification, and oversight increase with the consequences of error.</div>
+          </div>
+          <p class="risk-caption">This is a teaching concept, not a formal legal classification. But it reflects the principle both Opinion 388 and Opinion 512 build on: the level of diligence, verification, and oversight should be proportionate to what is at stake if something goes wrong. California's May 2026 updated guidance reinforces the same principle: higher-stakes use demands correspondingly greater supervisory control and verification.</p>
+        </div>
+      </section>
+
+      <!-- THE 8 DECISIONS -->
+      <section class="section" id="decisions">
+        <div class="section-inner">
+          <div class="sec-head"><span class="num">04</span><h2>The Eight Decisions</h2></div>
+          <div class="rule"></div>
+          <p class="section-intro">These are the decisions a first firm AI policy needs to make &mdash; what's legally required, and where the firm has genuine latitude to choose its own approach.</p>
+
+          <div class="decision-nav">
+            <a href="#d1">1</a><a href="#d2">2</a><a href="#d3">3</a><a href="#d4">4</a><a href="#d5">5</a><a href="#d6">6</a><a href="#d7">7</a><a href="#d8">8</a>
+          </div>
+
+          <article class="decision-card" id="d1">
+            <div class="decision-head">
+              <span class="decision-num">Decision No. 1</span>
+              <h3>What AI use does your firm need to govern?</h3>
+            </div>
+            <p>"AI" is broader than a chatbot. It includes general-purpose tools like ChatGPT or Claude, legal-specific research platforms with AI features, AI capabilities embedded in software you already use (document drafting assistants, email composition tools, AI-powered search in your practice management system), and potentially client-facing systems like intake chatbots or automated document assembly.</p>
+            <p>A policy limited to standalone chatbots will miss the AI already running quietly inside tools your firm adopted before anyone used the word "governance." The opposite failure is equally common and more dangerous: banning AI entirely without offering approved alternatives. When firms prohibit AI use without providing vetted options, staff use consumer tools on personal devices anyway &mdash; the firm loses all visibility into where client data is going. A blanket ban is not governance. It's an invitation to unmonitored risk.</p>
+            <div class="decide-box single">
+              <div class="decide-col decide-choice">
+                <div class="decide-label">What your firm needs to decide</div>
+                <p>What tools, features, and use cases fall within your policy's scope? Does it cover embedded AI in existing software? Personal devices? Administrative uses with no client data? Client-facing systems?</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="decision-card" id="d2">
+            <div class="decision-head">
+              <span class="decision-num">Decision No. 2</span>
+              <h3>Which tools will the firm permit, and how will you evaluate new ones?</h3>
+            </div>
+            <p>Under Rules 5.1 and 5.3, the supervisory obligation to vet tools before they're used with client information is a hard ethical requirement. At minimum, DC Opinion 388 requires that before adopting any tool, a lawyer determine: whether inputs are visible to the provider or third parties, whether interactions could influence outputs shown to later users, what the vendor's data retention and training policies are, and what security and breach notification procedures exist.</p>
+            <p>The most common failure here isn't skipping vendor review entirely &mdash; it's treating the brand name as the risk assessment. Saying "we allow Copilot" is not a confidentiality analysis. Those answers can differ between the free and paid tiers of the same product, and between default settings and enterprise configuration.</p>
+            <div class="decide-box">
+              <div class="decide-col decide-required">
+                <div class="decide-label">Required</div>
+                <p>A threshold assessment of any tool's data practices before client information is entered.</p>
+                <p class="decide-cite">DC Rule 1.6, amended 2025 &middot; ABA 512 vendor diligence framework</p>
+              </div>
+              <div class="decide-col decide-choice">
+                <div class="decide-label">Governance Choice</div>
+                <p>Whether you maintain a formal approved-tools list, how you document the vetting process, who can approve a new tool, and how often approvals are reviewed.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="decision-card" id="d3">
+            <div class="decision-head">
+              <span class="decision-num">Decision No. 3</span>
+              <h3>What client information can go into an AI tool, and under what conditions?</h3>
+            </div>
+            <p>This should be the largest section of any firm policy, because it's where the greatest number of obligations converge. For self-learning tools capable of exposing client information to others, ABA Opinion 512 requires informed client consent before the information is entered &mdash; and that consent cannot be a generic engagement-letter clause.</p>
+            <p>One underappreciated dimension: assuming "deidentified" automatically means safe. Opinion 388 warns that combinations of seemingly non-identifying facts may permit reidentification. A related failure is skipping the terms of service &mdash; the difference between a tool's free tier and its paid enterprise tier is often the difference between "trains on your inputs" and "does not." That distinction is the entire confidentiality analysis.</p>
+            <div class="decide-box">
+              <div class="decide-col decide-required">
+                <div class="decide-label">Required</div>
+                <p>Assessment of data retention and training practices before inputting client information; informed consent (specific to the tool and the risk) before using a self-learning tool with client data.</p>
+                <p class="decide-cite">DC Rules 1.1 and 1.6, amended 2025 &middot; ABA 512</p>
+              </div>
+              <div class="decide-col decide-choice">
+                <div class="decide-label">Governance Choice</div>
+                <p>What categories of information the firm permits in which tools, whether the firm prohibits client data in consumer-tier products entirely, and how consent is documented.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="decision-card" id="d4">
+            <div class="decision-head">
+              <span class="decision-num">Decision No. 4</span>
+              <h3>What human review does AI output require before it leaves the firm?</h3>
+            </div>
+            <p>Professional judgment remains with the lawyer. Both DC 388 and ABA 512 reject blind reliance on AI output. For court filings, the floor is unambiguous: all citations, factual claims, legal analysis, and arguments must be independently verified against primary sources before submission.</p>
+            <p>This is the single most sanctioned AI failure in the legal profession, and no tool is exempt &mdash; the Stanford RegLab finding that paid, citation-aware legal research tools hallucinate on 17 to 33 percent of queries means even specialized tools require verification. Notably, the failure to correct an AI-generated error after discovering it has drawn harsher consequences than the original mistake: courts have treated concealment as a separate violation, more serious than the underlying hallucination.</p>
+            <div class="decide-box">
+              <div class="decide-col decide-required">
+                <div class="decide-label">Required</div>
+                <p>Independent verification of AI-assisted factual and legal claims before submission to a court or delivery to a client. Compliance with any applicable court AI-disclosure standing orders.</p>
+                <p class="decide-cite">DC Rules 1.1 and 3.3, amended 2025 &middot; Rules 3.1, 8.4(c) &middot; ABA 512</p>
+              </div>
+              <div class="decide-col decide-choice">
+                <div class="decide-label">Governance Choice</div>
+                <p>What the minimum verification steps are by task type, whether higher-risk tasks (filings, client advice) require a second reviewer, and how review is documented.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="decision-card" id="d5">
+            <div class="decision-head">
+              <span class="decision-num">Decision No. 5</span>
+              <h3>When does the client need to know?</h3>
+            </div>
+            <p>Client disclosure is not a blanket obligation, but it is required in at least five situations: the client asks whether AI was used; engagement terms or outside counsel guidelines require it; informed consent is needed because client information will enter the tool; AI use is relevant to the fee basis; or AI output will influence a significant decision in the representation.</p>
+            <p>The common mistake runs in both directions: some lawyers assume AI use never requires disclosure, while others draft a generic "we use AI" clause and treat it as blanket consent. ABA 512 rejects generic boilerplate as sufficient informed consent when genuine consent is actually required &mdash; but also rejects the opposite extreme, that every routine AI use requires client notification. A client may also prohibit or condition AI use through engagement terms, outside counsel guidelines, or a court's AI-specific standing order &mdash; these matter-specific restrictions override internal approval.</p>
+            <div class="decide-box">
+              <div class="decide-col decide-required">
+                <div class="decide-label">Required</div>
+                <p>Disclosure or informed consent when any of the five triggering circumstances applies. Compliance with client-imposed and court-imposed AI restrictions.</p>
+                <p class="decide-cite">DC Rule 1.4 &middot; ABA 512</p>
+              </div>
+              <div class="decide-col decide-choice">
+                <div class="decide-label">Governance Choice</div>
+                <p>Whether the firm proactively discusses AI use in every engagement, how client instructions are recorded, and how the firm tracks court standing orders by judge.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="decision-card" id="d6">
+            <div class="decision-head">
+              <span class="decision-num">Decision No. 6</span>
+              <h3>Who is accountable for AI use by staff and contractors?</h3>
+            </div>
+            <p>Rules 5.1 and 5.3 are not suggestions. Managerial lawyers must establish policies governing AI use, and supervisory lawyers must take reasonable steps to ensure compliance. Courts have sanctioned supervising attorneys personally for AI-generated content that reached a filing under their signature &mdash; the supervisory duty doesn't transfer risk downward. A partner who signs a brief is responsible for the citations in it, regardless of whether an associate, a paralegal, or an AI tool generated them.</p>
+            <p>A policy that covers lawyers but forgets staff is incomplete. Secretaries, paralegals, law clerks, contractors, and vendors are squarely within the supervision obligation.</p>
+            <div class="decide-box">
+              <div class="decide-col decide-required">
+                <div class="decide-label">Required</div>
+                <p>Policies communicated, training provided, supervisory responsibility maintained regardless of who actually used the tool.</p>
+                <p class="decide-cite">DC Rules 5.1, 5.3 &middot; ABA 512</p>
+              </div>
+              <div class="decide-col decide-choice">
+                <div class="decide-label">Governance Choice</div>
+                <p>Who conducts training, how often, whether specific tools require separate instruction, and how the firm documents that training occurred.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="decision-card" id="d7">
+            <div class="decision-head">
+              <span class="decision-num">Decision No. 7</span>
+              <h3>How does AI use affect billing and client records?</h3>
+            </div>
+            <p>On billing, both opinions are direct: a lawyer bills for actual time spent, not for the time the task would have taken without AI. AI tool costs may be passed to the client only with the client's agreement and at actual cost, and lawyers may not bill for time spent learning to use a tool they'll use regularly, since maintaining technological competence is the lawyer's own obligation. Virginia's LEO 1901 diverges from ABA 512 here &mdash; a firm policy can't simply adopt one jurisdiction's billing rule as universal; it must reflect the fee rules governing your practice.</p>
+            <p>On client records, DC Opinion 388 raises a dimension most other opinions skip: lawyers should consider whether particular AI interactions connected with a matter belong in the client's file. That isn't "save every prompt" &mdash; it's a judgment about what constitutes part of the representation record.</p>
+            <div class="decide-box">
+              <div class="decide-col decide-required">
+                <div class="decide-label">Required</div>
+                <p>Billing reflects actual time (hourly) or demonstrable reasonableness (flat fee); AI costs disclosed if passed through; no billing for learning time.</p>
+                <p class="decide-cite">DC Rule 1.5 &middot; ABA 512</p>
+              </div>
+              <div class="decide-col decide-choice">
+                <div class="decide-label">Governance Choice</div>
+                <p>How AI tool costs are classified (overhead vs. pass-through), how fixed-fee arrangements account for AI efficiency, whether prompts or outputs are retained as part of the client file, and how AI-generated work product is labeled in firm systems.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="decision-card" id="d8">
+            <div class="decision-head">
+              <span class="decision-num">Decision No. 8</span>
+              <h3>How will the firm keep its governance current?</h3>
+            </div>
+            <p>An AI policy is not a document you adopt and file away. Tools change their terms of service, vendors update data practices, bar guidance evolves, and courts issue new AI-specific standing orders. The competence and supervisory duties that require a policy in the first place also require keeping it current.</p>
+            <p>Two items worth adding to a "what to do next" list beyond the policy itself: first, check your professional liability insurance &mdash; policies written before widespread AI adoption may not cover AI-related errors, and carriers increasingly ask whether firms maintain documented AI policies and vendor diligence records. Second, build the habit of checking applicable court standing orders before any filing in which AI was used; the number of judges with AI-specific disclosure requirements continues to grow.</p>
+            <div class="decide-box">
+              <div class="decide-col decide-required">
+                <div class="decide-label">Required</div>
+                <p>Ongoing competence in the tools the firm uses; supervisory duties continue as tools and guidance evolve.</p>
+                <p class="decide-cite">DC Rule 1.1, amended 2025 &middot; ABA 512</p>
+              </div>
+              <div class="decide-col decide-choice">
+                <div class="decide-label">Governance Choice</div>
+                <p>Review cadence, who owns the policy, incident reporting procedures, how changes in vendor terms trigger reassessment, and how the firm tracks new bar guidance and court orders.</p>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- SOURCES -->
+      <section class="section" id="sources">
+        <div class="section-inner">
+          <div class="sec-head"><span class="num">05</span><h2>Sources</h2></div>
+          <div class="rule"></div>
+          <div class="source-grid">
+            <div class="source-col">
+              <h4>Primary Authorities</h4>
+              <ul>
+                <li><a href="https://www.dcbar.org/for-lawyers/legal-ethics/ethics-opinions-210-present/ethics-opinion-388" target="_blank" rel="noopener">DC Bar Ethics Opinion 388</a> (April 2024)</li>
+                <li><a href="https://www.americanbar.org/content/dam/aba/administrative/professional_responsibility/ethics-opinions/aba-formal-opinion-512.pdf" target="_blank" rel="noopener">ABA Formal Opinion 512</a> (July 29, 2024, PDF)</li>
+                <li><a href="https://www.dccourts.gov/sites/default/files/2025-04/No284-24-ORDER-Adopting-Proposed-Changes-to-DCRules-of-Professional-Conduct-04-2025_0.pdf" target="_blank" rel="noopener">DC Court of Appeals Order M284-24</a> &mdash; Order Adopting Proposed Changes to the DC Rules of Professional Conduct (effective May 6, 2025, PDF)</li>
+              </ul>
+            </div>
+            <div class="source-col">
+              <h4>Comparator Guidance Referenced</h4>
+              <ul>
+                <li><a href="https://www.floridabar.org/etopinions/opinion-24-1/" target="_blank" rel="noopener">Florida Bar Ethics Opinion 24-1</a> (January 2024)</li>
+                <li><a href="https://vsb.org/Site/Site/news/news-items/20251124-SCV-rules.aspx" target="_blank" rel="noopener">Virginia Legal Ethics Opinion 1901</a> &mdash; Reasonable Fees and the Use of Generative Artificial Intelligence, approved by the Supreme Court of Virginia November 24, 2025</li>
+                <li><a href="https://www.njcourts.gov/sites/default/files/notices/2026/03/n260330c.pdf" target="_blank" rel="noopener">New Jersey Supreme Court Notice</a> &mdash; Responsible Use of Artificial Intelligence (AI) and Related Technologies (March 30, 2026, PDF)</li>
+                <li><a href="https://www.calbar.ca.gov/sites/default/files/portals/0/documents/ethics/Generative-AI-Practical-Guidance.pdf" target="_blank" rel="noopener">California Practical Guidance for the Use of Generative Artificial Intelligence in the Practice of Law</a> (updated May 14, 2026, PDF)</li>
+                <li><a href="https://www.msba.org/site/site/content/Committees/Committee-Landing/Artificial-Intelligence-Task-Force.aspx" target="_blank" rel="noopener">Maryland State Bar Association AI &amp; Legal Technology Task Force resources</a></li>
+              </ul>
+            </div>
+            <div class="source-col">
+              <h4>Research Cited</h4>
+              <ul>
+                <li><a href="https://reglab.stanford.edu/publications/hallucination-free-assessing-the-reliability-of-leading-ai-legal-research-tools/" target="_blank" rel="noopener">Stanford RegLab, &ldquo;Hallucination-Free? Assessing the Reliability of Leading AI Legal Research Tools&rdquo;</a> (Magesh et al., 2024)</li>
+                <li><a href="https://www.damiencharlotin.com/hallucinations/" target="_blank" rel="noopener">Damien Charlotin, AI Hallucination Cases database</a></li>
+              </ul>
+              <p class="source-note">This database live-updates; case counts and sanction totals change frequently. Consult it directly for current figures rather than citing a static snapshot.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap" style="flex-direction:column;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;width:100%;">
+        <div class="footer-brand">
+          <img src="badc logo.png" alt="Seal of the Bar Association of the District of Columbia" class="footer-logo" />
+          <div>
+            <h4>BADC Young Lawyers Section</h4>
+            <p>AI &amp; Law resource library. A members-only benefit of the Bar Association of the District of Columbia's Young Lawyers Section.</p>
+            <p class="footer-back"><a href="index.html#governance">&larr; Back to the Resource Library</a></p>
+          </div>
+        </div>
+        <div>
+          <h4>Questions</h4>
+          <p class="footer-contact">
+            <a href="mailto:YLS@badc.org">
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg></span>
+              YLS@badc.org
+            </a>
+            <a href="https://instagram.com/yls.badc" target="_blank" rel="noopener">
+              <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none"/></svg></span>
+              @yls.badc
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+var GATE_CODE = 'BADC2026';
+
+function unlockSite(){
+  var gate = document.getElementById('gate');
+  var site = document.getElementById('site');
+  try{ sessionStorage.setItem('badcYlsGateOK', '1'); }catch(err){}
+  gate.classList.add('hidden');
+  site.hidden = false;
+  requestAnimationFrame(function(){ site.classList.add('reveal'); });
+}
+
+document.getElementById('gate-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var input = document.getElementById('code').value.trim().toUpperCase();
+  var errorEl = document.getElementById('gate-error');
+  if(input !== GATE_CODE){
+    errorEl.classList.add('show');
+    return;
+  }
+  errorEl.classList.remove('show');
+  unlockSite();
+  setTimeout(function(){ document.querySelector('header.masthead h1').focus(); }, 500);
+});
+
+try{
+  if(sessionStorage.getItem('badcYlsGateOK') === '1'){
+    unlockSite();
+  }
+}catch(err){}
+
+document.querySelectorAll('a[href^="#"]').forEach(function(link){
+  link.addEventListener('click', function(e){
+    var id = link.getAttribute('href').slice(1);
+    var target = id && document.getElementById(id);
+    if(!target) return;
+    e.preventDefault();
+    target.scrollIntoView({behavior:'smooth', block:'start'});
+    if(history.pushState){ history.pushState(null, '', '#' + id); }
+  });
+});
+</script>
+
+</body>
+</html>
